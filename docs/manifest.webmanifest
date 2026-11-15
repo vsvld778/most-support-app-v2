@@ -1,0 +1,12 @@
+{
+  "name": "Мост поддержки V2",
+  "short_name": "Мост V2",
+  "description": "Ваш следующий шаг: работа, документы, семья и помощь.",
+  "lang": "ru",
+  "start_url": "./#home",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#faf8f2",
+  "theme_color": "#faf8f2",
+  "icons": [{"src":"assets/logo-mark.webp","sizes":"any","type":"image/webp","purpose":"any"}]
+}

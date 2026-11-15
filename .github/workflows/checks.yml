@@ -1,0 +1,40 @@
+name: Verify V2
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript syntax
+        run: |
+          node --check app.js
+          node --check theme.js
+          node --check i18n.js
+          node --check sw.js
+          for file in modules/*.js; do node --check "$file"; done
+      - name: Test user scenarios
+        run: node --test tests/*.test.cjs
+      - name: Verify published assets match source
+        run: |
+          python tools/build-static.py
+          git diff --exit-code -- docs
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r backend/requirements.txt
+      - name: Test authentication, permissions and workspace isolation
+        run: python backend/manage.py test --settings=config.test_settings
+      - name: Check migrations
+        run: python backend/manage.py makemigrations --check --dry-run --settings=config.test_settings
