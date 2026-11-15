@@ -35,6 +35,7 @@ def session(request):
         return JsonResponse({"authenticated": False, "login_url": "/login/"})
     return JsonResponse({
         "authenticated": True,
+        "user_id": str(request.user.pk),
         "display_name": request.user.display_name,
         "csrf_token": get_token(request),
         "workspace_max_bytes": MAX_BYTES,
@@ -77,11 +78,17 @@ def workspace(request):
     if request.method == "GET":
         record = UserWorkspace.objects.filter(owner=request.user).first()
         return JsonResponse({
+            "user_id": str(request.user.pk),
             "revision": record.revision if record else 0,
             "data": record.data if record else {},
             "updated_at": record.updated_at.isoformat() if record else None,
         })
 
+    # A different tab can sign in as another user while this page still holds
+    # the previous user's workspace in memory. Session authentication alone
+    # would otherwise permit that old page to write into the new account.
+    if request.headers.get("X-Most-Workspace-Owner") != str(request.user.pk):
+        return JsonResponse({"error": "account_changed", "action": "reload_session"}, status=409)
     if request.content_type != "application/json":
         return JsonResponse({"error": "json_required"}, status=415)
     if not allow_request("workspace-save", str(request.user.pk), 60, 600):
@@ -106,4 +113,4 @@ def workspace(request):
         if not updated:
             return JsonResponse({"error": "revision_conflict", "action": "reload_before_saving"}, status=409)
         WorkspaceEvent.objects.create(owner=request.user, revision=revision + 1)
-    return JsonResponse({"revision": revision + 1, "updated_at": now.isoformat()})
+    return JsonResponse({"user_id": str(request.user.pk), "revision": revision + 1, "updated_at": now.isoformat()})
