@@ -5,6 +5,8 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase
 from PIL import Image
 
+from .models import Organization, OrganizationMembership
+
 
 class EditorialTests(TestCase):
     def setUp(self):
@@ -50,7 +52,11 @@ class EditorialTests(TestCase):
         self.client.force_login(self.owner)
         self.assertContains(self.client.get(private), 'data-mode="demo"')
         self.assertContains(self.client.get("/admin/cabinets/"), private + "?editorial=organization")
-        self.assertContains(self.client.get("/partners/"), 'data-mode="server"')
+        self.assertTemplateUsed(self.client.get("/partners/"), "organization/access_required.html")
+        organization = Organization.objects.create(name="Синтетическая организация", is_approved=True)
+        OrganizationMembership.objects.create(user=self.staff, organization=organization)
+        self.client.force_login(self.staff)
+        self.assertContains(self.client.get(legacy, follow=True), 'data-mode="server"')
 
     def test_asset_is_released_only_with_publication(self):
         self.client.force_login(self.owner)
