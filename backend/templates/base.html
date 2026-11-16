@@ -48,9 +48,11 @@
           <a href="{% url 'dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' or request.resolver_match.url_name == 'case_detail' %}aria-current="page"{% endif %}>
             <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h10l4 4v14H5zM15 3v5h4M8 12h8M8 16h6"/></svg>Мои обращения
           </a>
+          {% if intake_mode != 'disabled' %}
           <a href="{% url 'case_create' %}" {% if request.resolver_match.url_name == 'case_create' %}aria-current="page"{% endif %}>
             <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/><circle cx="12" cy="12" r="10"/></svg>Новое обращение
           </a>
+          {% endif %}
           <a href="{% url 'partner_dashboard' %}" {% if request.resolver_match.url_name == 'partner_dashboard' or request.resolver_match.url_name == 'partner_case_detail' %}aria-current="page"{% endif %}>
             <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V7h9v14M13 11h7v10M2 21h20M7 10h3M7 14h3M7 18h3M16 14h2M16 18h2M6 7V3h5v4"/></svg>Организациям
           </a>
