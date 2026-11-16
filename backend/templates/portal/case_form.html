@@ -9,6 +9,7 @@
 <div class="form-layout">
   <section class="panel panel-accent form-panel" aria-labelledby="case-form-title">
     <h2 id="case-form-title">Ваш вопрос</h2><p>Поля со звёздочкой обязательны.</p>
+    {% if intake_mode == 'test' %}<div class="staging-banner" role="note">Используйте только вымышленные данные. Обращения в этом кабинете не передаются для оказания реальной помощи.</div>{% endif %}
     <form method="post" action="{% url 'case_create' %}">
       {% csrf_token %}{% include 'components/form_fields.html' %}
       <div class="form-actions"><button class="button" type="submit">{% if intake_mode == 'test' %}Создать тестовое обращение{% else %}Отправить обращение{% endif %}</button><a href="{% url 'dashboard' %}" class="small">Отмена</a></div>
