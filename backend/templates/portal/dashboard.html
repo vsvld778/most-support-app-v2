@@ -9,7 +9,7 @@
 {% if cases %}
   <div class="stats-strip" aria-label="Сводка по обращениям"><div><strong>{{ stats.total }}</strong><span>Всего</span></div><div><strong>{{ stats.active }}</strong><span>Открыто</span></div><div><strong>{{ stats.waiting }}</strong><span>Ждут вашего ответа</span></div><div><strong>{{ stats.resolved }}</strong><span>Завершено</span></div></div>
   <div class="section-heading"><h2>История обращений</h2></div>
-  <div class="case-list">{% for case in cases %}{% include 'components/case_card.html' %}{% endfor %}</div>
+  <div class="case-list" data-no-translate>{% for case in cases %}{% include 'components/case_card.html' %}{% endfor %}</div>
 {% else %}
   <section class="empty-state">
     <div class="empty-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 3h10l4 4v14H5zM15 3v5h4M8 12h8M8 16h5"/></svg></div>
