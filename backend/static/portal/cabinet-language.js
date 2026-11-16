@@ -14,19 +14,27 @@
     select.addEventListener('change', () => i18n.set(select.value));
   }
   let pending = false;
+  const observed = ['#org-view','#org-dialog','#org-navigation','#org-mobile-nav','#org-banner','#org-feedback']
+    .map(selector => document.querySelector(selector)).filter(Boolean);
+  const observe = () => {
+    for (const node of observed) observer.observe(node, {childList:true,subtree:true});
+  };
   const translate = () => {
     pending = false;
-    i18n.apply(document.body);
-    if (select) select.value = i18n.current().code;
-    if (!document.getElementById('org-view')) document.title = i18n.t(initialTitle) + suffix;
+    observer.disconnect();
+    try {
+      i18n.apply(document.body);
+      if (select && select.value !== i18n.current().code) select.value = i18n.current().code;
+      if (!observed.length) document.title = i18n.t(initialTitle) + suffix;
+    } finally {
+      observe();
+    }
   };
   const observer = new MutationObserver(() => {
-    if (!pending) {
-      pending = true;
-      queueMicrotask(translate);
-    }
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(translate);
   });
-  observer.observe(document.body, {childList:true, subtree:true});
   document.addEventListener('most:language', translate);
   translate();
 })();
