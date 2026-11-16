@@ -1,0 +1,65 @@
+{% extends "admin/index.html" %}
+{% load log %}
+
+{% block bodyclass %}{% if user.is_superuser %}platform-dashboard{% else %}{{ block.super }}{% endif %}{% endblock %}
+{% block coltype %}{% if user.is_superuser %}colM{% else %}{{ block.super }}{% endif %}{% endblock %}
+{% block nav-sidebar %}{% if user.is_superuser %}{% include "admin/platform/navigation.html" %}{% endif %}{% endblock %}
+{% block content_title %}{% if not user.is_superuser %}{{ block.super }}{% endif %}{% endblock %}
+
+{% block content %}
+{% if user.is_superuser %}
+<div class="platform-workspace">
+    <section class="platform-hero">
+        <h1>Управление платформой</h1>
+        <p>Обновляйте объявления, управляйте доступом к модулям и проверяйте изменения перед публикацией.</p>
+    </section>
+    <h2 class="platform-section-title">Разделы управления</h2>
+    <div class="platform-cards">
+        <a class="platform-card" href="{% url 'admin:platform_site' %}">
+            <strong>Сайт</strong>
+            <p>Объявление на главной странице migrantmost.ru.</p>
+            <span>Редактировать сайт</span>
+        </a>
+        <a class="platform-card" href="{% url 'admin:platform_cabinets' %}">
+            <strong>Личные кабинеты</strong>
+            <p>Объявления для мигрантов и организаций, модули кабинета организации.</p>
+            <span>Управлять кабинетами</span>
+        </a>
+        <a class="platform-card" href="{% url 'admin:platform_application' %}">
+            <strong>Приложение</strong>
+            <p>Общие модули приложения и веб-кабинета мигранта.</p>
+            <span>Настроить модули</span>
+        </a>
+    </div>
+    <section class="platform-records">
+        <h2 class="platform-section-title">Работа фонда</h2>
+        <div class="platform-quick-links">
+            <a href="{% url 'admin:portal_supportcase_changelist' %}">Обращения мигрантов</a>
+            <a href="{% url 'admin:portal_organizationrequest_changelist' %}">Заявки организаций</a>
+            <a href="{% url 'admin:portal_organization_changelist' %}">Организации</a>
+            <a href="{% url 'admin:portal_user_changelist' %}">Пользователи</a>
+        </div>
+    </section>
+    {% get_admin_log 5 as entries for_user user %}
+    {% if entries %}
+    <section class="platform-records">
+        <h2 class="platform-section-title">Мои недавние действия</h2>
+        <ul class="platform-activity">
+            {% for entry in entries %}
+                <li>
+                    {% if entry.get_admin_url and not entry.is_deletion %}
+                        <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                    {% else %}{{ entry.object_repr }}{% endif %}
+                    <time datetime="{{ entry.action_time|date:'c' }}">{{ entry.action_time|date:"j E, H:i" }}</time>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
+</div>
+{% else %}
+    {{ block.super }}
+{% endif %}
+{% endblock %}
+
+{% block sidebar %}{% if not user.is_superuser %}{{ block.super }}{% endif %}{% endblock %}

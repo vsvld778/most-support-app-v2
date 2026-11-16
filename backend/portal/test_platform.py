@@ -82,3 +82,71 @@ class PlatformIntegrationTests(TestCase):
             controller = admin.site._registry[model]
             self.assertFalse(controller.has_view_permission(request))
             self.assertFalse(controller.has_change_permission(request))
+
+
+class PlatformAdminTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        users = get_user_model()
+        cls.owner = users.objects.create_superuser("owner@example.test", "test-password")
+        cls.staff = users.objects.create_user("staff@example.test", "test-password", is_staff=True)
+
+    def test_sections_separate_editing_and_require_superuser(self):
+        self.client.force_login(self.staff)
+        self.assertNotContains(self.client.get(reverse("admin:index")), "Управление платформой")
+        for section in ("site", "cabinets", "application"):
+            self.assertEqual(self.client.get(reverse(f"admin:platform_{section}")).status_code, 403)
+
+        self.client.force_login(self.owner)
+        self.assertContains(self.client.get(reverse("admin:index")), "Управление платформой")
+        blocks = {
+            block.target: reverse("admin:portal_contentblock_change", args=[block.pk])
+            for block in ContentBlock.objects.all()
+        }
+        site = self.client.get(reverse("admin:platform_site"))
+        self.assertContains(site, blocks["site"])
+        self.assertNotContains(site, blocks["personal"])
+        cabinets = self.client.get(reverse("admin:platform_cabinets"))
+        self.assertContains(cabinets, blocks["personal"])
+        self.assertContains(cabinets, blocks["organization"])
+        self.assertContains(cabinets, reverse("admin:portal_featuresetting_change", args=["organization.projects"]))
+        application = self.client.get(reverse("admin:platform_application"))
+        self.assertContains(application, reverse("admin:portal_featuresetting_change", args=["personal.plan"]))
+        self.assertNotContains(application, reverse("admin:portal_featuresetting_change", args=["organization.projects"]))
+
+    def test_module_editor_updates_the_shared_personal_session_settings(self):
+        self.client.force_login(self.owner)
+        editor = reverse("admin:portal_featuresetting_change", args=["personal.plan"])
+        self.assertContains(self.client.get(editor), "В приложении и веб-кабинете мигранта.")
+        response = self.client.post(editor, {"mode": "off", "_save": "1"})
+        self.assertRedirects(response, reverse("admin:platform_application"))
+        self.assertEqual(self.client.get(reverse("v2_session")).json()["platform"]["modules"]["plan"], "off")
+        self.assertEqual(FeatureSetting.objects.get(pk="organization.projects").mode, "on")
+
+    def test_preview_keeps_draft_private_until_explicit_publication(self):
+        self.client.force_login(self.owner)
+        block = ContentBlock.objects.get(target="site")
+        editor = reverse("admin:portal_contentblock_change", args=[block.pk])
+        audience = reverse("site_publication")
+        content = {"title": "<strong>Новый текст</strong>", "text": "Черновик объявления", "visible": "on"}
+
+        self.assertRedirects(self.client.post(editor, {**content, "_continue": ""}), editor)
+        self.assertEqual(block.revisions.count(), 0)
+        self.assertFalse(self.client.get(audience).json()["visible"])
+        response = self.client.get(editor)
+        self.assertContains(response, "Предпросмотр")
+        self.assertContains(response, "&lt;strong&gt;Новый текст&lt;/strong&gt;")
+
+        self.assertRedirects(self.client.post(editor, {**content, "_publish": ""}), editor)
+        self.assertEqual(block.revisions.count(), 1)
+        self.assertEqual(self.client.get(audience).json()["title"], content["title"])
+        self.assertContains(self.client.get(editor), 'data-exists="true"')
+
+    def test_editor_rejects_invalid_publication(self):
+        self.client.force_login(self.owner)
+        block = ContentBlock.objects.get(target="personal")
+        editor = reverse("admin:portal_contentblock_change", args=[block.pk])
+        response = self.client.post(editor, {"title": "x" * 121, "visible": "on", "_publish": ""})
+        self.assertFormError(response.context["adminform"].form, "title",
+                             "Убедитесь, что это значение содержит не более 120 символов (сейчас 121).")
+        self.assertEqual(block.revisions.count(), 0)

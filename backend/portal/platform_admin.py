@@ -1,5 +1,7 @@
 from django.contrib import admin, messages
 from django.db import transaction
+from django.shortcuts import redirect
+from django.urls import reverse
 from django import forms
 
 from .platform_controls import ContentBlock, ContentRevision, FeatureSetting
@@ -37,20 +39,50 @@ class FeatureSettingForm(forms.ModelForm):
 @admin.register(FeatureSetting)
 class FeatureSettingAdmin(OwnerAdmin):
     form = FeatureSettingForm
-    list_display = ("key", "mode")
+    list_display = ("__str__", "mode")
     list_filter = ("mode",)
     readonly_fields = ("key",)
     autocomplete_fields = ("pilot_users", "pilot_organizations")
+    change_form_template = "admin/platform/module_form.html"
+
+    def response_change(self, request, obj):
+        response = super().response_change(request, obj)
+        if "_save" in request.POST and "_popup" not in request.POST:
+            name = "application" if obj.key.startswith("personal.") or obj.key == "intake.personal" else "cabinets"
+            response["Location"] = reverse(f"admin:platform_{name}")
+        return response
 
     def has_add_permission(self, request):
         return False
 
 
+class ContentBlockForm(forms.ModelForm):
+    class Meta:
+        model = ContentBlock
+        fields = ("title", "text", "visible")
+        widgets = {"text": forms.Textarea(attrs={"rows": 6})}
+
+
 @admin.register(ContentBlock)
 class ContentBlockAdmin(OwnerAdmin):
     list_display = ("target", "publication")
-    readonly_fields = ("target", "publication")
+    form = ContentBlockForm
     actions = ("publish",)
+    change_form_template = "admin/platform/content_form.html"
+
+    def render_change_form(self, request, context, add=False, change=False, form_url="", obj=None):
+        if obj is not None:
+            context.update(
+                editor_section="site" if obj.target == "site" else "cabinets",
+                published_revision=obj.revisions.first(),
+            )
+        return super().render_change_form(request, context, add, change, form_url, obj)
+
+    def response_change(self, request, obj):
+        if "_publish" in request.POST and "_popup" not in request.POST:
+            self.publish(request, self.get_queryset(request).filter(pk=obj.pk))
+            return redirect("admin:portal_contentblock_change", obj.pk)
+        return super().response_change(request, obj)
 
     def has_add_permission(self, request):
         return False

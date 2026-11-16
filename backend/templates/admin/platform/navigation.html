@@ -1,0 +1,9 @@
+{% with active=editor_section|default:platform_section %}
+<nav class="platform-nav" aria-label="Разделы управления">
+    <a href="{% url 'admin:index' %}" {% if active == 'overview' %}aria-current="page"{% endif %}>Обзор</a>
+    <a href="{% url 'admin:platform_site' %}" {% if active == 'site' %}aria-current="page"{% endif %}>Сайт</a>
+    <a href="{% url 'admin:platform_cabinets' %}" {% if active == 'cabinets' %}aria-current="page"{% endif %}>Личные кабинеты</a>
+    <a href="{% url 'admin:platform_application' %}" {% if active == 'application' %}aria-current="page"{% endif %}>Приложение</a>
+    <a href="{% url 'admin:app_list' app_label='portal' %}" {% if active == 'records' %}aria-current="page"{% endif %}>Все записи</a>
+</nav>
+{% endwith %}

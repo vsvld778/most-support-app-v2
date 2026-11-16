@@ -1,0 +1,38 @@
+{% extends "admin/change_form.html" %}
+{% load static %}
+
+{% block extrahead %}{{ block.super }}<script defer src="{% static 'platform/module-preview.js' %}"></script>{% endblock %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">Обзор</a> ›
+    {% if platform_section == "application" %}
+        <a href="{% url 'admin:platform_application' %}">Приложение</a>
+    {% else %}
+        <a href="{% url 'admin:platform_cabinets' %}">Личные кабинеты</a>
+    {% endif %} › Модули
+</div>
+{% endblock %}
+
+{% block content_subtitle %}{% endblock %}
+{% block content_title %}
+<header class="platform-page-heading"><h1>{{ original.get_key_display }}</h1></header>
+{% endblock %}
+
+{% block after_field_sets %}
+<section class="platform-module-preview" data-module-preview hidden aria-labelledby="platform-module-preview-title">
+    <h2 id="platform-module-preview-title">Доступ после сохранения</h2>
+    {% if platform_section == "application" %}
+        <p>В приложении и веб-кабинете мигранта.</p>
+    {% else %}
+        <p>В кабинете организации.</p>
+    {% endif %}
+    <p data-mode-label="off" hidden>Раздел скрыт.</p>
+    <p data-mode-label="on" hidden>Раздел доступен.</p>
+    <p data-mode-label="read" hidden>Раздел доступен для просмотра.</p>
+    <p data-mode-label="pilot" hidden>Раздел доступен только выбранным участникам пилота.</p>
+    <p data-mode-label="pause" hidden>Действующие заявки доступны, создание новых приостановлено.</p>
+    {% if original.key|slice:":7" == "intake." %}
+        <p>Отправка также зависит от общего режима приёма заявок.</p>
+    {% endif %}
+</section>
+{% endblock %}

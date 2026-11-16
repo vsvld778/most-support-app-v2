@@ -1,0 +1,52 @@
+{% extends "admin/base_site.html" %}
+
+{% block content_title %}{% endblock %}
+{% block content %}
+<div class="platform-workspace">
+    <header class="platform-page-heading">
+        <h1>{{ title }}</h1>
+        {% if section == "site" %}
+            <p>Управление объявлением на главной странице migrantmost.ru.</p>
+        {% elif section == "cabinets" %}
+            <p>Редактируйте объявления каждого кабинета и настраивайте доступ к модулям организаций.</p>
+        {% else %}
+            <p>Режимы модулей применяются одновременно в приложении и веб-кабинете мигранта.</p>
+        {% endif %}
+    </header>
+
+    {% if section != "application" %}
+        <div class="platform-cards">
+            {% for block in blocks %}
+            <a class="platform-card" href="{% url 'admin:portal_contentblock_change' block.pk %}">
+                <strong>{{ block.get_target_display }}</strong>
+                <p>{% if block.target == "site" %}Объявление на главной{% else %}Объявление в кабинете{% endif %}</p>
+                <span>Редактировать и посмотреть</span>
+            </a>
+            {% empty %}
+            <p>Редактируемые блоки отсутствуют.</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if section == "cabinets" %}
+        <p class="platform-crosslink">Модули мигранта настраиваются в разделе <a href="{% url 'admin:platform_application' %}">«Приложение»</a>.</p>
+    {% elif section == "application" %}
+        <p class="platform-crosslink">Объявление для мигрантов редактируется в разделе <a href="{% url 'admin:platform_cabinets' %}">«Личные кабинеты»</a>.</p>
+    {% endif %}
+
+    {% if section != "site" %}
+        <h2 class="platform-section-title">{% if section == "cabinets" %}Модули кабинета организации{% else %}Модули мигранта{% endif %}</h2>
+        <ul class="platform-module-list">
+            {% for module in modules %}
+            <li>
+                <a href="{% url 'admin:portal_featuresetting_change' module.pk %}">
+                    <strong>{{ module.get_key_display }}</strong>
+                    <span class="platform-mode" data-mode="{{ module.mode }}">{{ module.get_mode_display }}</span>
+                </a>
+            </li>
+            {% empty %}<li>Настройки модулей отсутствуют.</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}
