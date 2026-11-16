@@ -16,6 +16,7 @@ class PlatformAdminSite(AdminSite):
             for section in ("site", "cabinets", "application")
         ]
         editor = [
+            path("editorial/preview/organization/", self.admin_view(editorial_views.organization_preview), name="editorial_organization_preview"),
             path("editorial/preview/site/", self.admin_view(editorial_views.site_preview), name="editorial_site_preview"),
             path("editorial/preview/personal/<str:page>/", self.admin_view(editorial_views.personal_preview), name="editorial_personal_preview"),
             path("editorial/draft/<str:surface>/<path:page>/", self.admin_view(editorial_views.draft), name="editorial_draft"),

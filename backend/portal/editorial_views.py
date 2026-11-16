@@ -57,7 +57,7 @@ def links(surface):
             url = reverse("admin:editorial_personal_preview", args=[key])
             fragment = ""
         elif surface == "organization":
-            url = "/partners/preview/"
+            url = reverse("admin:editorial_organization_preview")
             if key == "request":
                 fragment = "#request/editorial-sample"
         else:
@@ -186,6 +186,12 @@ def site_preview(request):
     markup = re.sub(r"(?<![\w/])assets/", "/static/editorial-site/assets/", markup)
     markup = markup.replace('href="concept.pdf"', 'href="/static/editorial-site/concept.pdf"')
     return HttpResponse(markup)
+
+
+@require_GET
+def organization_preview(request):
+    require_owner(request)
+    return render(request, "organization/app.html", {"organization_demo": True})
 
 
 @require_GET

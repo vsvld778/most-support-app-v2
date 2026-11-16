@@ -39,6 +39,19 @@ class EditorialTests(TestCase):
         for page in ("entry", "login", "signup", "cases", "case-new", "case"):
             self.assertContains(self.client.get(f"/admin/editorial/preview/personal/{page}/"), f'data-page="{page}"')
 
+    def test_organization_editor_preview_is_private(self):
+        legacy = "/partners/preview/"
+        private = "/admin/editorial/preview/organization/"
+        self.assertRedirects(self.client.get(legacy), "/partners/", fetch_redirect_response=False)
+        self.assertEqual(self.client.get(private).status_code, 302)
+        self.assertNotContains(self.client.get("/cabinet/"), legacy)
+        self.client.force_login(self.staff)
+        self.assertEqual(self.client.get(private).status_code, 403)
+        self.client.force_login(self.owner)
+        self.assertContains(self.client.get(private), 'data-mode="demo"')
+        self.assertContains(self.client.get("/admin/cabinets/"), private + "?editorial=organization")
+        self.assertContains(self.client.get("/partners/"), 'data-mode="server"')
+
     def test_asset_is_released_only_with_publication(self):
         self.client.force_login(self.owner)
         data = io.BytesIO()

@@ -19,7 +19,6 @@
 </head>
 <body>
   <a href="#main" class="skip-link">Перейти к содержанию</a>
-  {% if staging_mode %}<div class="staging-banner" role="note"><strong>Тестовый режим.</strong> Используйте только вымышленные данные. Обращения в этом кабинете не передаются для оказания реальной помощи.</div>{% endif %}
   <header class="site-header {% if not user.is_authenticated %}auth-header{% endif %}">
     <div class="header-inner">
       <a class="brand" href="{% if user.is_authenticated %}{% url 'dashboard' %}{% else %}{% url 'login' %}{% endif %}" aria-label="Мост поддержки — главная страница кабинета">

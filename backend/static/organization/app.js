@@ -3,8 +3,6 @@
   'use strict';
   const t = value => window.MOST_I18N?.t(value) || value;
   const DEMO = document.body.dataset.mode === 'demo';
-  const DEMO_KEY = 'most-org-demo-v1';
-  const preview = DEMO && new URLSearchParams(location.search).get('editorial') === 'organization';
   const view = document.querySelector('#org-view');
   const dialog = document.querySelector('#org-dialog');
   const picker = document.querySelector('#organization-picker');
@@ -53,17 +51,16 @@
     return data;
   }
   function validateWorkspace(value) { return value && Number.isInteger(value.revision) && value.data?.profile && ['projects','services','documents'].every(k => Array.isArray(value.data[k])); }
-  function persistDemo(next) { if (!preview) localStorage.setItem(DEMO_KEY, JSON.stringify(next)); demo = next; workspace = {revision:next.revision,data:next.data}; requests=next.requests; details.clear(); Object.entries(next.details).forEach(([id,item]) => details.set(id,item)); }
+  function persistDemo(next) { demo = next; workspace = {revision:next.revision,data:next.data}; requests=next.requests; details.clear(); Object.entries(next.details).forEach(([id,item]) => details.set(id,item)); }
   function demoSession() { return {user:{name:'Демо-пользователь'},organizations:[{id:'demo',name:'Демонстрационная организация',kind:'ngo'}],organization:{id:'demo',name:'Демонстрационная организация',kind:'ngo'},membership:{role:'manager'},members:[{name:'Демо-пользователь',role:'manager'}],capabilities:{canWrite:true,canManage:true},intakeMode:'demo',cases:[]}; }
   async function boot(organization) {
     const run = ++epoch; detailEpoch++; ready=false; details.clear(); feedback.innerHTML=''; picker.disabled=true;
     view.setAttribute('aria-busy','true'); view.innerHTML='<div class="loading"><span class="loading-dot" aria-hidden="true"></span><h1>Открываем ваше пространство</h1><p>Проверяем доступ к организации.</p></div>';
     try {
       if (DEMO) {
-        let saved=null; try { if (!preview) saved=JSON.parse(localStorage.getItem(DEMO_KEY)); } catch (error) { if (error.name !== 'SyntaxError') throw new Error('Хранилище браузера недоступно. Для демо разрешите локальное сохранение.'); }
-        demo = saved?.version === 1 && validateWorkspace(saved) && Array.isArray(saved.requests) && saved.details && typeof saved.details === 'object' ? saved : emptyDemo();
+        demo = emptyDemo();
         session=demoSession(); workspace={revision:demo.revision,data:demo.data}; requests=demo.requests; Object.entries(demo.details).forEach(([id,item]) => details.set(id,item));
-        if (preview) details.set('editorial-sample', {
+        details.set('editorial-sample', {
           request:{id:'editorial-sample', reference:'DEMO-001', title:'Демонстрационная заявка', category:'consultation', status:'new'},
           messages:[],
         });
@@ -94,9 +91,9 @@
     picker.innerHTML=session.organizations.map(org => `<option value="${h(org.id)}" ${String(org.id)===String(session.organization.id)?'selected':''}>${h(org.name)}</option>`).join('');
     picker.disabled=writing || session.organizations.length < 2;
     const avatar=document.querySelector('#org-avatar'); avatar.textContent=(session.user?.name || session.organization.name || 'М').slice(0,1); avatar.title=session.user?.name || '';
-    let text=DEMO ? 'Демонстрационный режим · данные остаются в браузере' : session.intakeMode==='test' ? 'Тестовый режим · используйте только вымышленные данные' : session.intakeMode==='disabled' ? 'Рабочее пространство · изменения временно отключены' : 'Рабочее пространство организации';
+    let text=DEMO ? 'Предпросмотр редактора' : session.intakeMode==='disabled' ? 'Рабочее пространство · изменения временно отключены' : 'Рабочее пространство организации';
     if (!DEMO && session.membership.role==='viewer') text+=' · доступ для просмотра';
-    document.querySelector('#org-banner').innerHTML=`<div class="mode-banner ${session.intakeMode==='test'?'test':''}"><span>${h(text)}</span>${DEMO ? '<button class="text-button" type="button" data-action="demo-reset">Сбросить демо</button>' : `<span>${h(roles[session.membership.role] || session.membership.role)}</span>`}</div>`;
+    document.querySelector('#org-banner').innerHTML=`<div class="mode-banner ${DEMO?'test':''}"><span>${h(text)}</span>${DEMO ? '<button class="text-button" type="button" data-action="demo-reset">Сбросить демо</button>' : `<span>${h(roles[session.membership.role] || session.membership.role)}</span>`}</div>`;
     renderNav();
   }
   function renderNav() {
