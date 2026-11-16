@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily database backup for Most Support V2
+
+[Timer]
+OnCalendar=*-*-* 03:15:00 UTC
+RandomizedDelaySec=900
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,13 @@
+[Unit]
+Description=Backup Most Support V2 PostgreSQL
+After=postgresql.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /opt/most-support-app-v2/deploy/backup.sh
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/backups/most-support-v2

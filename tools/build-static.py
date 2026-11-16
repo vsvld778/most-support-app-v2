@@ -4,7 +4,7 @@ import shutil
 
 ROOT = Path(__file__).resolve().parents[1]
 DEST = ROOT / 'docs'
-FILES = ['index.html', 'styles.css', 'appearance.css', 'theme.js', 'icons.js', 'i18n.js', 'app.js', 'manifest.webmanifest', 'sw.js']
+FILES = ['index.html', 'styles.css', 'appearance.css', 'theme.js', 'icons.js', 'i18n.js', 'app.js', 'sync.js', 'runtime-config.js', 'manifest.webmanifest', 'sw.js']
 
 def build():
     DEST.mkdir(exist_ok=True)
