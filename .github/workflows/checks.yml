@@ -39,6 +39,7 @@ jobs:
           python-version: '3.12'
       - run: pip install -r backend/requirements.txt
       - name: Test authentication, permissions and workspace isolation
-        run: python backend/manage.py test --settings=config.test_settings
+        working-directory: backend
+        run: python manage.py test portal --settings=config.test_settings
       - name: Check migrations
         run: python backend/manage.py makemigrations --check --dry-run --settings=config.test_settings
