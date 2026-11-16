@@ -6,13 +6,26 @@
     <header class="platform-page-heading">
         <h1>{{ title }}</h1>
         {% if section == "site" %}
-            <p>Управление объявлением на главной странице migrantmost.ru.</p>
+            <p>Выберите страницу, а затем текст, изображение или блок прямо в предпросмотре.</p>
         {% elif section == "cabinets" %}
             <p>Редактируйте объявления каждого кабинета и настраивайте доступ к модулям организаций.</p>
         {% else %}
             <p>Режимы модулей применяются одновременно в приложении и веб-кабинете мигранта.</p>
         {% endif %}
     </header>
+
+    {% for label, pages in page_editors %}
+    <section aria-label="{{ label }}">
+      <h2 class="platform-section-title">{{ label }} · страницы</h2>
+      <div class="platform-cards">
+        {% for page in pages %}
+        <a class="platform-card" href="{{ page.url }}" target="_blank" rel="noopener">
+          <strong>{{ page.title }}</strong><span>Открыть редактор</span>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+    {% endfor %}
 
     {% if section != "application" %}
         <div class="platform-cards">

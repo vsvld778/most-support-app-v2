@@ -1,7 +1,9 @@
 from django.urls import path
-from . import views, organization_api, organization_ui, platform_views, workspace_api
+from . import editorial_views, views, organization_api, organization_ui, platform_views, workspace_api
 
 urlpatterns = [
+    path("api/public/editorial/<str:surface>/<path:page>/", editorial_views.publication, name="editorial_publication"),
+    path("editorial-images/<uuid:key>/", editorial_views.image, name="editorial_image"),
     path("cabinet/", platform_views.entry, name="cabinet_entry"),
     path("api/public/site-publication/", platform_views.website_publication, name="site_publication"),
     path("api/v2/session/", workspace_api.session, name="v2_session"),

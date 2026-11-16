@@ -12,8 +12,9 @@
   let rememberedMode='';
   try{rememberedMode=localStorage.getItem(deploymentKey)||'';}catch{}
   const runtime=window.MOST_SERVER_CONFIG;
+  const preview=runtime?.enabled===true && location.search && new URLSearchParams(location.search).get('editorial')==='application';
   const configMissing=(!runtime || typeof runtime.enabled!=='boolean') && rememberedMode!=='local';
-  const serverEnabled=runtime?.enabled===true || (!runtime && rememberedMode==='server');
+  const serverEnabled=!preview && (runtime?.enabled===true || (!runtime && rememberedMode==='server'));
   if(runtime && typeof runtime.enabled==='boolean'){try{localStorage.setItem(deploymentKey,runtime.enabled?'server':'local');}catch{}}
   let state=initial(),storageOK=true,offlineReady=false,route=location.hash.slice(1)||'home',opener=null,toastTimer,search='';
   let platform={};
@@ -39,7 +40,7 @@
     return next;
   }
   function restoreGuest(){state=initial();try{const saved=JSON.parse(localStorage.getItem(KEY));if(saved)state=checkedWorkspace(saved);storageOK=true;}catch{storageOK=false;}}
-  if(!serverEnabled&&!configMissing)restoreGuest();
+  if(!preview&&!serverEnabled&&!configMissing)restoreGuest();
   function editable(){return !loading&&!blocked;}
   function storageScope(){return account?'most-support-v2-files-user-'+String(account.userId):'most-support-v2-files';}
   function resetFileScope(){const old=dbPromise;dbPromise=null;if(old)old.then(db=>db.close()).catch(()=>{});}
@@ -77,6 +78,7 @@
   const money=value=>new Intl.NumberFormat('ru-RU',{maximumFractionDigits:2}).format(Number(value)||0)+' ₽';
   function toast(message){if(account&&['Сохранено на этом устройстве','Черновик сохранён на устройстве.','Профиль сохранён'].includes(message))message='Изменения подготовлены. Статус сохранения — вверху экрана.';const node=document.querySelector('#toast');node.textContent=tr(message);node.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>node.classList.remove('show'),5200);}
   function save(){
+    if(preview)return true;
     if(!editable()){toast('Сохранение приостановлено. Проверьте подключение.');return false;}
     if(account){
       const generation=loadGeneration;let snapshot;
@@ -89,7 +91,7 @@
     try{localStorage.setItem(KEY,JSON.stringify(state));storageOK=true;return true;}catch{storageOK=false;toast('Не удалось сохранить. Скачайте резервную копию в профиле.');return false;}
   }
   let dbPromise;
-  function db(){if(!editable())return Promise.reject(new Error('Сеанс недоступен. Повторите вход.'));if(!('indexedDB' in window))return Promise.reject(new Error('Хранилище файлов недоступно в этом браузере.'));if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{const r=indexedDB.open(storageScope(),1);r.onupgradeneeded=()=>r.result.createObjectStore('files',{keyPath:'id'});r.onsuccess=()=>resolve(r.result);r.onerror=()=>{dbPromise=null;reject(new Error('Не удалось открыть хранилище файлов.'));};});return dbPromise;}
+  function db(){if(preview || !editable())return Promise.reject(new Error('Сеанс недоступен. Повторите вход.'));if(!('indexedDB' in window))return Promise.reject(new Error('Хранилище файлов недоступно в этом браузере.'));if(!dbPromise)dbPromise=new Promise((resolve,reject)=>{const r=indexedDB.open(storageScope(),1);r.onupgradeneeded=()=>r.result.createObjectStore('files',{keyPath:'id'});r.onsuccess=()=>resolve(r.result);r.onerror=()=>{dbPromise=null;reject(new Error('Не удалось открыть хранилище файлов.'));};});return dbPromise;}
   async function fileOp(mode,callback){const generation=loadGeneration;const database=await db();if(generation!==loadGeneration)throw new Error('Сеанс изменился. Повторите действие.');return new Promise((resolve,reject)=>{const tx=database.transaction('files',mode),req=callback(tx.objectStore('files'));let result;req.onsuccess=()=>{result=req.result};tx.oncomplete=()=>generation===loadGeneration?resolve(result):reject(new Error('Сеанс изменился. Повторите действие.'));tx.onerror=()=>reject(new Error('Не удалось сохранить файл. Проверьте свободное место.'));tx.onabort=()=>reject(new Error('Операция с файлом прервана.'));});}
   const files={async put(file){if(!file||!file.size)throw new Error('Выберите непустой файл.');if(file.size>10*1024*1024)throw new Error('Размер файла — не более 10 МБ.');const item={id:uid(),name:file.name||'recording.webm',type:file.type||'application/octet-stream',size:file.size,blob:file};await fileOp('readwrite',s=>s.put(item));return {id:item.id,name:item.name,size:item.size,type:item.type};},async get(id){const item=await fileOp('readonly',s=>s.get(id));if(!item)throw new Error('Файл отсутствует на этом устройстве.');return item.blob;},remove:id=>fileOp('readwrite',s=>s.delete(id)),clear:()=>fileOp('readwrite',s=>s.clear())};
   function download(filename,content,mime='text/plain;charset=utf-8'){const blob=content instanceof Blob?content:new Blob([content],{type:mime});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);}
@@ -142,6 +144,12 @@
   setInterval(()=>{if(!editable()||!moduleWritable('plan')||!state.preferences.notifications||!('Notification' in window)||Notification.permission!=='granted')return;const key=today(),due=(M.data('plan').tasks||[]).filter(t=>!t.done&&t.date===key);if(due.length&&state.preferences.lastNotification!==key){new Notification(tr('Мост поддержки'),{body:`Сегодня в плане: ${due.length}`,tag:'most-v2-today'});state.preferences.lastNotification=key;save();}},60000);
   render();
   M.ready=serverEnabled&&!configMissing?connectAccount():Promise.resolve();
+  if(runtime?.enabled && document.createElement){
+    const editor=document.createElement('script');
+    editor.src='/static/platform/editorial.js?v=1';
+    editor.dataset.surface='application';
+    document.head.append(editor);
+  }
   window.addEventListener('beforeunload',event=>{if(account&&(pendingSaves||unsaved)){event.preventDefault();event.returnValue='';}});
-  if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js').then(()=>navigator.serviceWorker.ready).then(()=>{offlineReady=true;}).catch(()=>{});
+  if(!preview&&'serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js').then(()=>navigator.serviceWorker.ready).then(()=>{offlineReady=true;}).catch(()=>{});
 })();

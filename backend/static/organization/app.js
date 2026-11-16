@@ -3,6 +3,7 @@
   'use strict';
   const DEMO = document.body.dataset.mode === 'demo';
   const DEMO_KEY = 'most-org-demo-v1';
+  const preview = DEMO && new URLSearchParams(location.search).get('editorial') === 'organization';
   const view = document.querySelector('#org-view');
   const dialog = document.querySelector('#org-dialog');
   const picker = document.querySelector('#organization-picker');
@@ -51,16 +52,20 @@
     return data;
   }
   function validateWorkspace(value) { return value && Number.isInteger(value.revision) && value.data?.profile && ['projects','services','documents'].every(k => Array.isArray(value.data[k])); }
-  function persistDemo(next) { localStorage.setItem(DEMO_KEY, JSON.stringify(next)); demo = next; workspace = {revision:next.revision,data:next.data}; requests=next.requests; details.clear(); Object.entries(next.details).forEach(([id,item]) => details.set(id,item)); }
+  function persistDemo(next) { if (!preview) localStorage.setItem(DEMO_KEY, JSON.stringify(next)); demo = next; workspace = {revision:next.revision,data:next.data}; requests=next.requests; details.clear(); Object.entries(next.details).forEach(([id,item]) => details.set(id,item)); }
   function demoSession() { return {user:{name:'Демо-пользователь'},organizations:[{id:'demo',name:'Демонстрационная организация',kind:'ngo'}],organization:{id:'demo',name:'Демонстрационная организация',kind:'ngo'},membership:{role:'manager'},members:[{name:'Демо-пользователь',role:'manager'}],capabilities:{canWrite:true,canManage:true},intakeMode:'demo',cases:[]}; }
   async function boot(organization) {
     const run = ++epoch; detailEpoch++; ready=false; details.clear(); feedback.innerHTML=''; picker.disabled=true;
     view.setAttribute('aria-busy','true'); view.innerHTML='<div class="loading"><span class="loading-dot" aria-hidden="true"></span><h1>Открываем ваше пространство</h1><p>Проверяем доступ к организации.</p></div>';
     try {
       if (DEMO) {
-        let saved=null; try { saved=JSON.parse(localStorage.getItem(DEMO_KEY)); } catch (error) { if (error.name !== 'SyntaxError') throw new Error('Хранилище браузера недоступно. Для демо разрешите локальное сохранение.'); }
+        let saved=null; try { if (!preview) saved=JSON.parse(localStorage.getItem(DEMO_KEY)); } catch (error) { if (error.name !== 'SyntaxError') throw new Error('Хранилище браузера недоступно. Для демо разрешите локальное сохранение.'); }
         demo = saved?.version === 1 && validateWorkspace(saved) && Array.isArray(saved.requests) && saved.details && typeof saved.details === 'object' ? saved : emptyDemo();
         session=demoSession(); workspace={revision:demo.revision,data:demo.data}; requests=demo.requests; Object.entries(demo.details).forEach(([id,item]) => details.set(id,item));
+        if (preview) details.set('editorial-sample', {
+          request:{id:'editorial-sample', reference:'DEMO-001', title:'Демонстрационная заявка', category:'consultation', status:'new'},
+          messages:[],
+        });
       } else {
         const selected=organization || new URL(location.href).searchParams.get('organization');
         const nextSession=await api('session/',{},selected);

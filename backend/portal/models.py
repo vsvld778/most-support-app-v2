@@ -244,3 +244,6 @@ class WorkspaceEvent(models.Model):
 
 
 from .platform_controls import ContentBlock, ContentRevision, FeatureSetting  # noqa: E402,F401
+
+# Register editorial models in the portal migration graph.
+from .editorial import EditorialImage, EditorialPage  # noqa: E402,F401
