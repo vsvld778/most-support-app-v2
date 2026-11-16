@@ -16,6 +16,9 @@
     <p class="eyebrow">Личный кабинет</p>
     <h2 id="login-title">Войти</h2>
     <p>Используйте email и пароль, указанные при регистрации.</p>
+    {% if staff_sandbox and request.GET.retry == '1' %}
+    <p class="auth-note" role="status">Форма входа обновлена. Введите email и пароль ещё раз.</p>
+    {% endif %}
     <form method="post" action="{% url 'login' %}">
       {% csrf_token %}
       {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}

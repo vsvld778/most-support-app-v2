@@ -9,6 +9,7 @@ STAFF_BASE = "/staff-test"
 FORCE_SCRIPT_NAME = STAFF_BASE
 SESSION_COOKIE_NAME = "most_staff_sandbox_session"
 CSRF_COOKIE_NAME = "most_staff_sandbox_csrf"
+CSRF_FAILURE_VIEW = "portal.views.sandbox_csrf_failure"
 SESSION_COOKIE_PATH = STAFF_BASE + "/"
 CSRF_COOKIE_PATH = SESSION_COOKIE_PATH
 STATIC_URL = STAFF_BASE + "/static/"
