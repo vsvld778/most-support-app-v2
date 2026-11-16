@@ -1,0 +1,60 @@
+:root {
+  color-scheme: light; --paper: #f8f6ef; --white: #fffefb; --ink: #19363c;
+  --muted: #515f5a; --teal: #18555b; --line: #d5dcd4; --soft: #eaf0e9;
+  font: 16px/1.5 ui-sans-serif, system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); }
+a { color: var(--teal); }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid #a98139; outline-offset: 3px; }
+.skip { position: absolute; top: -5rem; padding: .75rem; background: var(--white); }
+.skip:focus { top: .5rem; z-index: 5; }
+.top { background: var(--white); border-bottom: 1px solid var(--line); }
+.top-inner, main { width: min(100% - 3rem, 1290px); margin: auto; }
+.top-inner { min-height: 76px; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.brand { display: flex; align-items: center; gap: .75rem; text-decoration: none; font-weight: 750; }
+.brand small, .record small, .history small { display: block; color: var(--muted); font-weight: 500; }
+.account, .heading { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
+main { padding: 2rem 0 4rem; }
+h1, h2, p { margin-top: 0; }
+h1 { font: 600 clamp(2rem, 4vw, 3.65rem)/1.06 Georgia, serif; margin: 0 0 .5rem; }
+h2 { font-size: 1.12rem; margin-bottom: .55rem; }
+.heading { justify-content: space-between; margin-bottom: 1.4rem; }
+.heading p, .muted { color: var(--muted); margin-bottom: .5rem; }
+.teams { list-style: none; padding: 0; margin: 0; color: var(--teal); font-size: .9rem; }
+.teams li, .badge { padding: .25rem .7rem; background: var(--soft); border-radius: 1rem; }
+.environment, .feedback { border-left: 3px solid #aa8d54; background: #f0eadc; padding: .7rem 1rem; }
+.feedback { border-color: var(--teal); background: var(--soft); }
+.tabs { display: flex; gap: .35rem; flex-wrap: wrap; border-bottom: 1px solid var(--line); margin-bottom: 1rem; }
+.tabs a { text-decoration: none; padding: .65rem .9rem; border-bottom: 2px solid transparent; }
+.tabs a[aria-current] { color: var(--ink); font-weight: 700; border-color: var(--teal); }
+.filters { display: flex; align-items: end; flex-wrap: wrap; gap: .75rem; margin: 1rem 0; }
+label { display: block; font-size: .9rem; font-weight: 650; }
+input, select, textarea { display: block; width: 100%; font: inherit; margin-top: .3rem; padding: .55rem .75rem; color: var(--ink); background: white; border: 1px solid #b9c5bc; border-radius: .45rem; }
+input[type="hidden"] { display: none; }
+button { border: 0; background: var(--teal); color: white; padding: .65rem .9rem; border-radius: .45rem; font: inherit; font-weight: 650; cursor: pointer; min-height: 44px; }
+button.quiet { color: var(--teal); background: transparent; text-decoration: underline; }
+.records { display: grid; gap: .55rem; }
+.record, .panel { border: 1px solid var(--line); border-radius: .8rem; background: var(--white); padding: 1rem 1.2rem; }
+.record { text-decoration: none; display: grid; grid-template-columns: minmax(10rem, 1fr) minmax(9rem, .55fr) minmax(10rem, .65fr); gap: 1rem; align-items: center; color: var(--ink); }
+.record:hover { border-color: var(--teal); }
+.record-title strong { display: block; overflow-wrap: anywhere; }
+.badge { display: inline-block; font-size: .86rem; font-weight: 650; }
+.back { display: inline-block; margin-bottom: 1rem; }
+.case-grid { display: grid; grid-template-columns: minmax(0, 2fr) minmax(16rem, 1fr); gap: 1rem; align-items: start; }
+.case-content, .case-side { display: grid; gap: 1rem; min-width: 0; }
+.action > div { margin-bottom: .8rem; }
+.body-text { overflow-wrap: anywhere; }
+.thread, .history li { border-top: 1px solid var(--line); padding: .75rem 0 0; margin-top: .75rem; }
+.thread > div { display: flex; gap: .8rem; flex-wrap: wrap; justify-content: space-between; }
+.thread time, .thread small { color: var(--muted); }
+.thread p { margin: .4rem 0; }
+.history { list-style: none; padding: 0; }
+dl { margin: .5rem 0; } dt { color: var(--muted); font-size: .87rem; } dd { margin: 0 0 .6rem; }
+.errorlist { color: #912833; padding-left: 1.1rem; }
+@media (max-width: 730px) {
+  main, .top-inner { width: calc(100% - 1.5rem); }
+  .case-grid { grid-template-columns: 1fr; }
+  .record { grid-template-columns: 1fr 1fr; gap: .55rem; }
+  .record-title { grid-column: 1 / -1; }
+}

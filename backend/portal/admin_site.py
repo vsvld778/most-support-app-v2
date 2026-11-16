@@ -5,10 +5,16 @@ from django.urls import path
 
 from . import editorial_views
 from .platform_controls import FEATURES, ContentBlock, FeatureSetting
+from .staff_models import StaffMembership
 
 
 class PlatformAdminSite(AdminSite):
     index_template = "admin/platform/index.html"
+
+    def has_permission(self, request):
+        return super().has_permission(request) and (
+            request.user.is_superuser or not StaffMembership.objects.filter(user=request.user).exists()
+        )
 
     def get_urls(self):
         sections = [

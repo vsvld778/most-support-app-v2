@@ -10,15 +10,16 @@
     <h2>Мне нужна помощь</h2>
     <p>Личный план, сроки, справочная помощь и обращения.</p>
     {% if user.is_authenticated %}
-      <a class="button" href="/app/">Открыть кабинет</a>
+      <a class="button" href="{{ staff_base }}/app/">Открыть кабинет</a>
     {% else %}
-      <a class="button" href="{% url 'login' %}?next=/app/">Войти через браузер</a>
+      <a class="button" href="{% url 'login' %}?next={{ staff_base }}/app/">Войти через браузер</a>
     {% endif %}
-    <p><a href="/app/#profile">Установить веб-приложение</a></p>
+    <p><a href="{{ staff_base }}/app/#profile">Установить веб-приложение</a></p>
     <hr>
     <h2>Я представляю организацию</h2>
     <p>Заявки, проекты и переписка с фондом для подтверждённых команд.</p>
     <a class="button" href="{% url 'partner_dashboard' %}">Войти в кабинет организации</a>
+    {% if staff_has_desk %}<hr><h2>Я сотрудник центра</h2><a class="button" href="{% url 'staff_queue' %}">Открыть рабочую очередь</a>{% endif %}
   </div>
 </section>
 {% endblock %}

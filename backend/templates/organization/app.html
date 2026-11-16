@@ -11,12 +11,13 @@
   <link rel="icon" type="image/webp" href="{% static 'portal/logo-mark.webp' %}">
   <link rel="stylesheet" href="{% static 'organization/styles.css' %}?v=org-platform-3">
   <link rel="stylesheet" href="{% static 'portal/theme.css' %}">
-  <script defer src="/app/i18n.js?v=2.1.2"></script>
+  <script defer src="{{ staff_base }}/app/i18n.js?v=2.1.3"></script>
   <script defer src="{% static 'portal/cabinet-language.js' %}?v=2"></script>
-  <script defer src="{% static 'organization/app.js' %}?v=org-platform-4"></script>
+  <script defer src="{% static 'organization/app.js' %}?v=org-platform-5"></script>
   <script defer src="{% static 'platform/editorial.js' %}?v=1" data-surface="organization"></script>
 </head>
-<body data-mode="{% if organization_demo %}demo{% else %}server{% endif %}">
+<body data-base="{{ staff_base }}" data-mode="{% if organization_demo %}demo{% else %}server{% endif %}">
+{% if staff_sandbox %}<div role="note">Тестовая среда. Используйте только вымышленные данные.</div>{% endif %}
   <a class="skip" href="#org-main">Перейти к содержанию</a>
   <aside class="org-sidebar">
     <a class="brand" href="#overview" aria-label="Мост поддержки — обзор кабинета"><img src="{% static 'portal/logo-mark.webp' %}" width="42" height="48" alt=""><span><strong>Мост<br>поддержки</strong><small>Вместе. На каждом шаге.</small></span></a>

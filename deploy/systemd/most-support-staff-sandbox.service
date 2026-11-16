@@ -1,0 +1,22 @@
+[Unit]
+Description=Most Support isolated staff sandbox
+After=network.target
+
+[Service]
+User=moststafftest
+Group=moststafftest
+WorkingDirectory=/opt/most-support-staff-sandbox/backend
+EnvironmentFile=/etc/most-support-staff-sandbox/app.env
+ExecStart=/opt/most-support-app-v2/.venv/bin/gunicorn --bind 127.0.0.1:8002 --workers 1 --threads 1 --timeout 30 config.wsgi:application
+Restart=on-failure
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/most-support-staff-sandbox/data
+InaccessiblePaths=/etc/most-support-v2 /var/lib/most-support-v2
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

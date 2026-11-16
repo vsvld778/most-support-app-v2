@@ -1,0 +1,8 @@
+{% if form %}
+<section class="panel section">
+<h2>{{ title }}</h2>{% if audience %}<p class="muted">{{ audience }}</p>{% endif %}
+<form method="post" class="action">{% csrf_token %}
+<input type="hidden" name="action" value="{{ action }}">
+{{ form.as_div }}
+<button type="submit">{{ button }}</button></form>
+</section>{% endif %}
