@@ -16,6 +16,7 @@
     rate_limited:'Слишком частое сохранение. Подождите и повторите.',
     network_error:'Нет связи с сервером. Изменения ещё не сохранены.', invalid_response:'Сервер вернул неожиданный ответ. Загрузите записи заново.',
     disposed:'Это подключение уже закрыто.', stale_operation:'Подключение изменилось.', confirmation_required:'Подтвердите перенос гостевых записей.',
+    module_unavailable:'Доступность раздела изменилась. Скачайте копию и обновите кабинет.',
     workspace_not_empty:'В аккаунте уже есть записи. Автоматическая замена гостевыми данными запрещена.',
     invalid_workspace:'Не удалось подготовить записи для сервера.', configuration_error:'Некорректный адрес сервера.'
   };
@@ -97,7 +98,7 @@
       emit('loading');
       try {
         const login = await request('session/',{},expected);
-        if (login.authenticated === false) { emit('guest'); return {mode:'guest',enabled:true}; }
+        if (login.authenticated === false) { emit('guest'); return {mode:'guest',enabled:true,platform:login.platform}; }
         if (login.authenticated !== true || typeof login.user_id !== 'string' || !login.user_id || typeof login.csrf_token !== 'string' || !login.csrf_token) throw error('invalid_response');
         const remote = await request('workspace/',{headers:{'X-Most-Workspace-Owner':login.user_id}},expected);
         if (remote.user_id !== login.user_id) throw error('account_changed');
@@ -108,7 +109,7 @@
         if (Number.isSafeInteger(login.workspace_max_bytes) && login.workspace_max_bytes > 0) maxBytes = Math.min(login.workspace_max_bytes,48 * 1024);
         serverEmpty = revision === 0 && Object.keys(data).length === 0;
         lastSavedAt = remote.updated_at || null; emit('ready');
-        return {mode:'account',data,userId:session.userId,displayName:session.displayName,revision,empty:serverEmpty};
+        return {mode:'account',data,userId:session.userId,displayName:session.displayName,revision,empty:serverEmpty,platform:login.platform};
       } catch (failure) { fail(failure,expected); throw failure; }
     }
     function save(data) {

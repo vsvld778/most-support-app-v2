@@ -62,6 +62,10 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = Path(os.environ.get("STATIC_ROOT", str(BASE_DIR / "staticfiles")))
 STATICFILES_DIRS = [BASE_DIR / "static"] if (BASE_DIR / "static").exists() else []
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "portal.storage.PublicStaticFilesStorage"},
+}
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"
@@ -81,7 +85,7 @@ SECURE_HSTS_PRELOAD = False
 TRUST_PROXY_HEADERS = boolean("DJANGO_TRUST_PROXY")
 if TRUST_PROXY_HEADERS:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-DATA_UPLOAD_MAX_MEMORY_SIZE = 65536
+DATA_UPLOAD_MAX_MEMORY_SIZE = 96 * 1024
 FILE_UPLOAD_MAX_MEMORY_SIZE = 0
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 50
 REGISTRATION_MODE = os.environ.get("REGISTRATION_MODE", "closed")
