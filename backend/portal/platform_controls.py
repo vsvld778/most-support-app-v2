@@ -122,7 +122,11 @@ def restrict_personal_changes(previous, proposed, modes):
     if "modules" in proposed and not isinstance(new, dict):
         return False
     new = new or {}
+
+    def with_defaults(value, seed):
+        return {**seed, **value} if isinstance(value, dict) else value
+
     return all(
-        modes["personal." + name] == "on" or old.get(name, seed) == new.get(name, seed)
+        modes["personal." + name] == "on" or with_defaults(old.get(name, seed), seed) == with_defaults(new.get(name, seed), seed)
         for name, seed in PERSONAL_SEEDS.items()
     )
