@@ -32,6 +32,19 @@ jobs:
           git diff --exit-code -- docs
   backend:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: most_platform_ci
+          POSTGRES_PASSWORD: most-platform-ci-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d most_platform_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -39,6 +52,10 @@ jobs:
           python-version: '3.12'
       - run: pip install -r backend/requirements.txt
       - name: Test authentication, permissions and workspace isolation
-        run: python backend/manage.py test --settings=config.test_settings
+        working-directory: backend
+        run: python manage.py test portal --settings=config.test_settings
+      - name: Test PostgreSQL data isolation and both upgrade paths
+        working-directory: backend
+        run: python manage.py test portal --settings=config.postgres_test_settings
       - name: Check migrations
         run: python backend/manage.py makemigrations --check --dry-run --settings=config.test_settings

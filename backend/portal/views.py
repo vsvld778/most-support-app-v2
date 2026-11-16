@@ -15,6 +15,7 @@ from django.views.decorators.http import require_GET, require_http_methods
 from .access import approved_organizations, partner_cases
 from .forms import CaseMessageForm, EmailAuthenticationForm, SignupForm, SupportCaseForm
 from .models import CaseEvent, CaseMessage, SupportCase
+from .platform_controls import feature_modes
 from .ratelimit import allow_request, client_ip
 
 class PortalLoginView(LoginView):
@@ -59,7 +60,7 @@ def dashboard(request):
 @login_required
 @require_http_methods(["GET", "POST"])
 def case_create(request):
-    if settings.PORTAL_INTAKE_MODE == "disabled":
+    if settings.PORTAL_INTAKE_MODE == "disabled" or feature_modes(request.user)["intake.personal"] != "on":
         messages.info(request, "Приём обращений ещё не открыт.")
         return redirect("dashboard")
     form = SupportCaseForm(request.POST or None, initial={"preferred_language": request.user.preferred_language})
@@ -81,7 +82,7 @@ def case_create(request):
     return render(request, "portal/case_form.html", {"form": form})
 
 def add_message(request, case, audience, form):
-    if settings.PORTAL_INTAKE_MODE == "disabled":
+    if settings.PORTAL_INTAKE_MODE == "disabled" or feature_modes(request.user)["intake.personal"] not in {"on", "pause"}:
         form.add_error(None, "Приём сообщений сейчас приостановлен.")
         return False
     if case.status in {SupportCase.Status.RESOLVED, SupportCase.Status.CLOSED}:
@@ -134,6 +135,9 @@ def partner_dashboard(request):
 @require_http_methods(["GET", "POST"])
 def partner_case_detail(request, public_id):
     case = get_object_or_404(partner_cases(request.user), public_id=public_id)
+    if request.method == "POST" and not case.partner_organization.memberships.filter(
+            user=request.user, is_active=True, role__in=["manager", "editor"]).exists():
+        raise PermissionDenied
     form = CaseMessageForm(request.POST or None)
     if request.method == "POST" and add_message(request, case, CaseMessage.Audience.PARTNER, form):
         return redirect("partner_case_detail", public_id=case.public_id)

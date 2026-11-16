@@ -12,6 +12,7 @@ from django.middleware.csrf import get_token
 from django.utils import timezone
 from django.views.decorators.http import require_GET, require_http_methods
 from .models import UserWorkspace, WorkspaceEvent
+from .platform_controls import feature_modes, published_content, restrict_personal_changes
 from .ratelimit import allow_request
 
 MAX_BYTES = 48 * 1024
@@ -31,14 +32,19 @@ def authenticated(view):
 @require_GET
 def session(request):
     """A CSRF token is deliberately returned to same-origin JS, not exposed via CORS."""
+    platform = {
+        "modules": {key.split(".", 1)[1]: mode for key, mode in feature_modes(request.user).items()
+                    if key.startswith("personal.")},
+        "announcement": published_content("personal"),
+    }
     if not request.user.is_authenticated:
-        return JsonResponse({"authenticated": False, "login_url": "/login/"})
+        return JsonResponse({"authenticated": False, "login_url": "/login/", "platform": platform})
     return JsonResponse({
         "authenticated": True,
         "user_id": str(request.user.pk),
         "display_name": request.user.display_name,
         "csrf_token": get_token(request),
-        "workspace_max_bytes": MAX_BYTES,
+        "workspace_max_bytes": MAX_BYTES, "platform": platform,
     })
 
 
@@ -106,7 +112,9 @@ def workspace(request):
         return JsonResponse({"error": "invalid_workspace"}, status=400)
 
     with transaction.atomic():
-        record, _ = UserWorkspace.objects.get_or_create(owner=request.user)
+        record, _ = UserWorkspace.objects.select_for_update().get_or_create(owner=request.user)
+        if record.revision == revision and not restrict_personal_changes(record.data, payload["data"], feature_modes(request.user)):
+            return JsonResponse({"error": "module_unavailable"}, status=409)
         now = timezone.now()
         updated = UserWorkspace.objects.filter(pk=record.pk, revision=revision).update(
             data=payload["data"], revision=revision + 1, updated_at=now)

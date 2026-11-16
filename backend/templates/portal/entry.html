@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Личные кабинеты{% endblock %}
+{% block content %}
+<section class="auth-shell" aria-label="Личные кабинеты">
+  <div class="auth-story">
+    <h1>Личный кабинет</h1>
+    <p>Откройте свои записи, план и обращения или перейдите в рабочее пространство вашей организации.</p>
+  </div>
+  <div class="auth-card">
+    <h2>Мне нужна помощь</h2>
+    <p>Личный план, сроки, справочная помощь и обращения.</p>
+    {% if user.is_authenticated %}
+      <a class="button" href="/app/">Открыть кабинет</a>
+    {% else %}
+      <a class="button" href="{% url 'login' %}?next=/app/">Войти через браузер</a>
+    {% endif %}
+    <p><a href="/app/#profile">Установить веб-приложение</a></p>
+    <hr>
+    <h2>Я представляю организацию</h2>
+    <p>Заявки, проекты и переписка с фондом для подтверждённых команд.</p>
+    <a class="button" href="{% url 'partner_dashboard' %}">Войти в кабинет организации</a>
+    <p><a href="{% url 'organization_preview' %}">Посмотреть демоверсию</a></p>
+  </div>
+</section>
+{% endblock %}

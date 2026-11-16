@@ -1,0 +1,46 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | Мост поддержки{% endblock %}
+
+{% block dark-mode-vars %}
+<link rel="icon" type="image/webp" href="{% static 'portal/logo-mark.webp' %}">
+<script src="{% static 'portal/theme.js' %}"></script>
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'portal/theme.css' %}">
+<link rel="stylesheet" href="{% static 'platform/admin.css' %}">
+{% endblock %}
+
+{% block header %}
+<header id="header">
+    <a class="platform-brand" href="{% url 'admin:index' %}">
+        <img src="{% static 'portal/logo-mark.webp' %}" width="39" height="43" alt="">
+        <span><strong>Мост поддержки</strong><small>Панель управления</small></span>
+    </a>
+    <div class="platform-user-tools">
+        {% if has_permission %}
+            {% if user.has_usable_password %}
+                <a class="platform-account" href="{% url 'admin:password_change' %}" title="Изменить пароль"><span class="platform-account-name">{% firstof user.display_name user.get_username %}</span><span class="platform-account-mobile">Пароль</span></a>
+            {% endif %}
+            <a class="platform-top-link" href="{% url 'cabinet_entry' %}">Кабинеты</a>
+        {% endif %}
+        <button type="button" data-theme-open hidden aria-label="Оформление"></button>
+        {% if has_permission %}
+            <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+                {% csrf_token %}<button type="submit">Выйти</button>
+            </form>
+        {% endif %}
+    </div>
+</header>
+{% endblock %}
+
+{% block nav-sidebar %}
+{% if user.is_superuser %}
+    {% include "admin/platform/navigation.html" %}
+{% else %}
+    {{ block.super }}
+{% endif %}
+{% endblock %}

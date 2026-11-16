@@ -1,0 +1,42 @@
+{% load static %}
+<aside class="platform-preview" data-preview aria-labelledby="platform-preview-heading">
+    <div class="platform-preview-header">
+        <h2 id="platform-preview-heading">Предпросмотр</h2>
+        <div class="platform-segment" role="group" aria-label="Размер экрана" data-preview-controls hidden>
+            <button type="button" data-preview-width="wide" aria-pressed="true">Компьютер</button>
+            <button type="button" data-preview-width="narrow" aria-pressed="false">Телефон</button>
+        </div>
+    </div>
+    <div class="platform-preview-versions" role="group" aria-label="Версия объявления" data-preview-controls hidden>
+        <button type="button" data-preview-version="draft" aria-pressed="true">Черновик</button>
+        <button type="button" data-preview-version="published" aria-pressed="false">Опубликовано</button>
+    </div>
+    <div class="platform-preview-stage">
+        <div class="platform-preview-screen" data-preview-screen data-width="wide" data-target="{{ original.target }}">
+            <header class="platform-preview-brand">
+                <img src="{% static 'portal/logo-mark.webp' %}" width="23" height="26" alt="">
+                <strong>Мост поддержки</strong>
+            </header>
+            <div class="platform-preview-body">
+                <div class="platform-preview-block" data-preview-block{% if not original.visible %} hidden{% endif %}>
+                    {% if original.target == "site" %}
+                        <h3 data-preview-title>{{ original.title }}</h3>
+                    {% else %}
+                        <strong data-preview-title>{{ original.title }}</strong>
+                    {% endif %}
+                    <p data-preview-text>{{ original.text }}</p>
+                </div>
+                <p class="platform-preview-empty" data-preview-empty{% if original.visible %} hidden{% endif %}>Объявление скрыто.</p>
+                <div class="platform-preview-context" aria-hidden="true">
+                    {{ original.get_target_display }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="platform-preview-note">
+        {% if published_revision %}Опубликовано {{ published_revision.published_at|date:"j E Y, H:i" }}{% else %}Публикаций ещё нет.{% endif %}
+    </p>
+    <div data-published-revision data-exists="{% if published_revision %}true{% else %}false{% endif %}" data-visible="{% if published_revision.visible %}true{% else %}false{% endif %}" hidden>
+        <span data-revision-title>{{ published_revision.title }}</span><span data-revision-text>{{ published_revision.text }}</span>
+    </div>
+</aside>
