@@ -85,7 +85,12 @@
       document.querySelector('#org-banner').innerHTML='';
       picker.innerHTML='<option>Доступ не подключён</option>';
       const denied=error.status===403, loggedOut=error.status===401;
-      view.innerHTML=empty(loggedOut ? 'Войдите в кабинет' : denied ? 'Доступ организации ещё не подключён' : 'Не удалось открыть кабинет', error.message, 'organization', loggedOut ? `<a class="btn" href="${h(login)}">Войти</a>` : button('Проверить ещё раз','reload'));
+      const recovery = loggedOut
+        ? `<a class="btn" href="${h(login)}">Войти</a>`
+        : denied
+          ? `<button class="btn" form="org-logout" name="next" value="${h(login)}" type="submit">Войти в кабинет организации</button>`
+          : button('Проверить ещё раз','reload');
+      view.innerHTML=empty(loggedOut ? 'Войдите в кабинет' : denied ? 'Доступ организации ещё не подключён' : 'Не удалось открыть кабинет', error.message, 'organization', recovery);
       renderNav();
     }
   }
@@ -100,9 +105,13 @@
   }
   function renderNav() {
     const active=route.startsWith('request/')?'requests':route;
-    document.querySelector('#org-navigation').innerHTML=visibleNav().map(([id,ico,label]) => `<a class="nav-item" href="#${id}" ${active===id?'aria-current="page"':''}>${icon(ico)}<span>${label}</span>${id==='requests'&&ready&&requests.some(r=>r.status==='waiting')?`<span class="nav-count">${requests.filter(r=>r.status==='waiting').length}</span>`:''}</a>`).join('');
-    const mobile=[nav[0],nav[1],nav[2],nav[3],['more','more','Ещё']];
-    document.querySelector('#org-mobile-nav').innerHTML=mobile.filter(([id]) => sectionMode(id) !== 'off').map(([id,ico,label]) => `<a href="#${id}" ${(active===id || id==='more'&&['services','documents','organization','reports'].includes(active))?'aria-current="page"':''}>${icon(ico)}<span>${label}</span></a>`).join('');
+    const sections=ready ? visibleNav() : [];
+    document.querySelector('#org-navigation').innerHTML=sections.map(([id,ico,label]) => `<a class="nav-item" href="#${id}" ${active===id?'aria-current="page"':''}>${icon(ico)}<span>${label}</span>${id==='requests'&&requests.some(r=>r.status==='waiting')?`<span class="nav-count">${requests.filter(r=>r.status==='waiting').length}</span>`:''}</a>`).join('');
+    const mobile=ready ? [nav[0],nav[1],nav[2],nav[3],['more','more','Ещё']] : [];
+    const mobileNav=document.querySelector('#org-mobile-nav');
+    mobileNav.hidden=!ready;
+    mobileNav.innerHTML=mobile.filter(([id]) => sectionMode(id) !== 'off').map(([id,ico,label]) => `<a href="#${id}" ${(active===id || id==='more'&&['services','documents','organization','reports'].includes(active))?'aria-current="page"':''}>${icon(ico)}<span>${label}</span></a>`).join('');
+    document.querySelector('#org-avatar').hidden=!ready;
   }
   function requestRow(item) { return `<a class="record-row" href="#request/${h(item.id)}"><span class="icon-box blue">${icon('file')}</span><div class="row-copy"><strong data-no-translate>${h(item.title)}</strong><p>${h(item.reference)} · ${h(categories[item.category] || item.category)}</p><div class="record-meta"><span>${h(date(item.updatedAt))}</span>${item.isTest?'<span>Тестовая запись</span>':''}${DEMO?'<span>Локальное демо</span>':''}</div></div>${statusTag(item)}</a>`; }
   function assignedCases(all = false) {

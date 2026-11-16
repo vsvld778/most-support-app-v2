@@ -76,6 +76,18 @@ class OrganizationAPITests(TestCase):
         self.client.force_login(self.staff)
         self.assertEqual(self.client.get(self.url("organization_session")).status_code, 403)
 
+    def test_cabinet_offers_account_switch_when_membership_is_missing(self):
+        cabinet = reverse("partner_dashboard")
+        login = reverse("login", query={"next": cabinet})
+        self.assertContains(self.client.get(cabinet), 'id="org-navigation"')
+        self.client.force_login(self.staff)
+        response = self.client.get(cabinet)
+        self.assertContains(response, "Доступ организации ещё не подключён")
+        self.assertContains(response, "Войти в кабинет организации")
+        self.assertNotContains(response, 'id="org-navigation"')
+        self.assertRedirects(self.client.post(reverse("logout"), {"next": login}), login)
+        self.assertRedirects(self.client.get(cabinet), login)
+
     def test_membership_and_organization_revocation_apply_immediately(self):
         self.assertEqual(self.client.get(self.url("organization_session")).status_code, 200)
         member = OrganizationMembership.objects.get(user=self.manager)
