@@ -9,11 +9,11 @@
   <title>Кабинет организации — Мост поддержки</title>
   <script src="{% static 'portal/theme.js' %}"></script>
   <link rel="icon" type="image/webp" href="{% static 'portal/logo-mark.webp' %}">
-  <link rel="stylesheet" href="{% static 'organization/styles.css' %}?v=org-platform-2">
+  <link rel="stylesheet" href="{% static 'organization/styles.css' %}?v=org-platform-3">
   <link rel="stylesheet" href="{% static 'portal/theme.css' %}">
-  <script defer src="/app/i18n.js?v=2.1.1"></script>
+  <script defer src="/app/i18n.js?v=2.1.2"></script>
   <script defer src="{% static 'portal/cabinet-language.js' %}?v=2"></script>
-  <script defer src="{% static 'organization/app.js' %}?v=org-platform-2"></script>
+  <script defer src="{% static 'organization/app.js' %}?v=org-platform-3"></script>
   <script defer src="{% static 'platform/editorial.js' %}?v=1" data-surface="organization"></script>
 </head>
 <body data-mode="{% if organization_demo %}demo{% else %}server{% endif %}">
@@ -28,7 +28,7 @@
     <header class="org-topbar">
       <a class="mobile-brand" href="#overview" aria-label="Мост поддержки — обзор"><img src="{% static 'portal/logo-mark.webp' %}" width="32" height="40" alt=""><strong>Мост<br>поддержки</strong></a>
       <div class="org-switch"><label for="organization-picker">Организация</label><select id="organization-picker" data-no-translate disabled><option>Загрузка…</option></select></div>
-      <div class="top-actions"><select id="most-language" class="interface-language" data-language-switch aria-label="Язык интерфейса"></select><a class="site-link" href="{% url 'cabinet_entry' %}">Кабинеты</a><button type="button" data-theme-open hidden aria-label="Оформление"></button><a id="org-avatar" class="avatar" data-no-translate href="#organization" aria-label="Организация и участники">М</a></div>
+      <div class="top-actions"><select id="most-language" class="interface-language" data-language-switch aria-label="Язык интерфейса"></select><a class="site-link" href="{% url 'cabinet_entry' %}">Кабинеты</a><button type="button" data-theme-open hidden aria-label="Оформление"></button><a id="org-avatar" class="avatar" href="#organization" aria-label="Организация и участники">М</a></div>
     </header>
     <main id="org-main" class="org-content" tabindex="-1">
       <div id="org-banner"></div>

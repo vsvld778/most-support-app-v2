@@ -918,6 +918,115 @@ V2 · записи на этом устройстве|V2 · жазуулар б�
 Пароль|Сырсөз|Parol|Рамз
 Сохранить в демо|Сыноо нускасына сактоо|Demo versiyasiga saqlash|Нигоҳ доштан дар намоиш
 Ваши записи остаются на языке оригинала.|Жазууларыңыз түпнуска тилинде калат.|Yozuvlaringiz asl tilida qoladi.|Сабтҳои шумо ба забони аслӣ мемонанд.
+Проекты, заявки и диалог с фондом — в одном пространстве.|Долбоорлор, арыздар жана фонд менен баарлашуу бир мейкиндикте.|Loyihalar, arizalar va jamgʻarma bilan muloqot bir joyda.|Лоиҳаҳо, дархостҳо ва муколама бо фонд дар як фазо.
+ПРОСТРАНСТВО|МЕЙКИНДИК|ISH MAYDONI|ФАЗОИ КОРӢ
+организации|уюмдун|tashkilot uchun|барои ташкилот
+МОСТ К ОБЩЕМУ РЕЗУЛЬТАТУ|ЖАЛПЫ НАТЫЙЖАГА КӨПҮРӨ|UMUMIY NATIJAGA KOʻPRIK|ПУЛ БА НАТИҶАИ МУШТАРАК
+Проектов в работе|Иштелип жаткан долбоорлор|Jarayondagi loyihalar|Лоиҳаҳои дар ҷараён
+Открытых заявок|Ачык арыздар|Ochiq arizalar|Дархостҳои кушода
+Все заявки|Бардык арыздар|Barcha arizalar|Ҳамаи дархостҳо
+Начните с одного вопроса|Бир суроодон баштаңыз|Bir savoldan boshlang|Аз як савол оғоз кунед
+Опишите, какая поддержка нужна вашей организации. Заявка и ответы останутся в этом кабинете.|Уюмуңузга кандай колдоо керектигин жазыңыз. Арыз жана жооптор ушул кабинетте калат.|Tashkilotingizga qanday yordam kerakligini yozing. Ariza va javoblar shu kabinetda qoladi.|Шарҳ диҳед, ки ба ташкилоти шумо чӣ дастгирӣ лозим аст. Дархост ва ҷавобҳо дар ҳамин ҳуҷра мемонанд.
+Добавьте проект и плановую дату. Здесь появятся ближайшие сроки вашей команды.|Долбоорду жана пландалган күндү кошуңуз. Командаңыздын жакынкы мөөнөттөрү бул жерде көрүнөт.|Loyiha va rejalashtirilgan sanani qoʻshing. Jamoangizning yaqin muddatlari shu yerda koʻrinadi.|Лоиҳа ва санаи банақшагирифтаро илова кунед. Муҳлатҳои наздиктарини дастаатон дар ин ҷо пайдо мешаванд.
+Разговор|Маек|Suhbat|Суҳбат
+продолжается.|уланат.|davom etadi.|идома меёбад.
+Ответы фонда и уточнения команды сохраняются внутри каждой заявки.|Фонддун жооптору жана команданын тактоолору ар бир арызда сакталат.|Jamgʻarma javoblari va jamoa aniqliklari har bir arizada saqlanadi.|Ҷавобҳои фонд ва тавзеҳоти даста дар дохили ҳар дархост нигоҳ дошта мешаванд.
+Перейти к сообщениям|Билдирүүлөргө өтүү|Xabarlarga oʻtish|Гузариш ба паёмҳо
+Посмотреть в действии|Иш жүзүндө көрүү|Amalda koʻrish|Дар амал дидан
+Добавьте два учебных проекта и три вымышленные заявки. Они никуда не отправляются.|Эки окуу долбоорун жана үч ойдон чыгарылган арызды кошуңуз. Алар эч жакка жөнөтүлбөйт.|Ikkita oʻquv loyihasi va uchta toʻqima ariza qoʻshing. Ular hech qayerga yuborilmaydi.|Ду лоиҳаи омӯзишӣ ва се дархости сохта илова кунед. Онҳо ба ҳеҷ ҷо фиристода намешаванд.
+Показать пример|Мисалды көрсөтүү|Misolni koʻrsatish|Намоиши намуна
+Обновить|Жаңыртуу|Yangilash|Навсозӣ
+Заявок пока нет|Азырынча арыз жок|Hozircha arizalar yoʻq|Ҳоло дархост нест
+Опишите, какая поддержка нужна вашей организации.|Уюмуңузга кандай колдоо керектигин жазыңыз.|Tashkilotingizga qanday yordam kerakligini yozing.|Шарҳ диҳед, ки ба ташкилоти шумо чӣ дастгирӣ лозим аст.
+У каждого дела есть первый шаг|Ар бир иштин алгачкы кадамы бар|Har bir ishning birinchi qadami bor|Ҳар кор қадами аввал дорад
+Добавьте название проекта, ближайшую цель и плановую дату.|Долбоордун аталышын, жакынкы максатын жана пландалган күнүн кошуңуз.|Loyiha nomi, yaqin maqsad va rejalashtirilgan sanani qoʻshing.|Номи лоиҳа, ҳадафи наздик ва санаи банақшагирифтаро илова кунед.
+Переписки пока нет|Азырынча кат алышуу жок|Hozircha yozishmalar yoʻq|Ҳоло мукотиба нест
+Здесь появятся ответы фонда по заявкам вашей организации.|Уюмуңуздун арыздары боюнча фонддун жооптору бул жерде көрүнөт.|Tashkilotingiz arizalariga jamgʻarma javoblari shu yerda koʻrinadi.|Ҷавобҳои фонд ба дархостҳои ташкилотатон дар ин ҷо пайдо мешаванд.
+Что может ваша команда?|Командаңыз эмне кыла алат?|Jamoangiz nimalar qila oladi?|Дастаи шумо чӣ кор карда метавонад?
+Опишите услуги и направления, в которых организация готова участвовать.|Уюм катышууга даяр кызматтарды жана багыттарды сүрөттөңүз.|Tashkilot ishtirok etishga tayyor xizmatlar va yoʻnalishlarni yozing.|Хидматҳо ва самтҳоеро шарҳ диҳед, ки ташкилот барои иштирок омода аст.
+Важное — в одном месте|Маанилүү нерселер бир жерде|Muhim narsalar bir joyda|Маълумоти муҳим дар як ҷой
+Добавьте HTTPS-ссылку на документ. Проверьте права доступа в сервисе, где хранится файл.|Документке HTTPS шилтемесин кошуңуз. Файл сакталган сервистеги кирүү укуктарын текшериңиз.|Hujjatga HTTPS havola qoʻshing. Fayl saqlanadigan servisda kirish huquqlarini tekshiring.|Пайванди HTTPS ба ҳуҷҷатро илова кунед. Ҳуқуқи дастрасиро дар хадамоте, ки файл дар он нигоҳ дошта мешавад, санҷед.
+Сайт организации|Уюмдун сайты|Tashkilot sayti|Сомонаи ташкилот
+Полный адрес, начинающийся с https://.|https:// менен башталган толук дарек.|https:// bilan boshlanadigan toʻliq manzil.|Суроғаи пуррае, ки бо https:// оғоз мешавад.
+О вашей работе|Ишиңиз тууралуу|Faoliyatingiz haqida|Дар бораи фаъолияти шумо
+Языки общения|Байланыш тилдери|Muloqot tillari|Забонҳои муошират
+Сохранится только в демонстрации этого браузера. Фонд эти данные не получит.|Ушул браузердеги сыноо нускасында гана сакталат. Фонд бул маалыматты албайт.|Faqat shu brauzerdagi demo versiyada saqlanadi. Jamgʻarma bu maʼlumotlarni olmaydi.|Танҳо дар нусхаи намоишии ҳамин браузер нигоҳ дошта мешавад. Фонд ин маълумотро намегирад.
+Участники команды|Команда мүчөлөрү|Jamoa aʼzolari|Аъзои даста
+Доступ подтверждает администратор фонда. Заявка на изменение сама по себе не добавляет участников и не меняет роли.|Кирүү укугун фонддун администратору ырастайт. Өзгөртүү тууралуу арыз өзүнөн өзү мүчөлөрдү кошпойт же ролдорду өзгөртпөйт.|Kirish huquqini jamgʻarma administratori tasdiqlaydi. Oʻzgartirish arizasining oʻzi aʼzolarni qoʻshmaydi va rollarni oʻzgartirmaydi.|Дастрасиро маъмури фонд тасдиқ мекунад. Худи дархости тағйир аъзоро илова намекунад ва нақшҳоро дигар намекунад.
+Можно вести рабочее пространство и обновлять профиль организации.|Иш мейкиндигин жүргүзүп, уюмдун профилин жаңырта аласыз.|Ish maydonini yuritish va tashkilot profilini yangilash mumkin.|Метавонед фазои кориро идора кунед ва профили ташкилотро нав кунед.
+Ваша роль|Сиздин ролуңуз|Sizning rolingiz|Нақши шумо
+Загружено заявок|Жүктөлгөн арыздар|Yuklangan arizalar|Дархостҳои боршуда
+Открытые|Ачык|Ochiq|Кушода
+Ждут ответа организации|Уюмдун жообун күтүп жатат|Tashkilot javobini kutmoqda|Мунтазири ҷавоби ташкилот
+Завершённые|Аяктагандар|Yakunlanganlar|Анҷомёфта
+Работа команды|Команданын иши|Jamoa ishi|Кори даста
+Проекты: запланирован|Долбоорлор: пландалган|Loyihalar: rejalashtirilgan|Лоиҳаҳо: банақшагирифта
+Проекты: в работе|Долбоорлор: иштелүүдө|Loyihalar: jarayonda|Лоиҳаҳо: дар ҷараён
+Проекты: приостановлен|Долбоорлор: убактылуу токтотулган|Loyihalar: vaqtincha toʻxtatilgan|Лоиҳаҳо: муваққатан боздошта
+Проекты: завершён|Долбоорлор: аяктаган|Loyihalar: yakunlangan|Лоиҳаҳо: анҷомёфта
+Услуги в каталоге|Каталогдогу кызматтар|Katalogdagi xizmatlar|Хидматҳои феҳрист
+Ссылки на документы|Документтерге шилтемелер|Hujjatlarga havolalar|Пайвандҳо ба ҳуҷҷатҳо
+CSV содержит названия, номера, этапы и даты загруженных проектов и заявок. Тексты переписки и документы в выгрузку не включаются. Все данные этого отчёта относятся к демонстрации.|CSV файлында жүктөлгөн долбоорлор менен арыздардын аттары, номерлери, этаптары жана күндөрү бар. Кат алышуунун тексттери жана документтер файлга кирбейт. Бул отчёттогу маалыматтын баары сыноо нускасына тиешелүү.|CSV yuklangan loyihalar va arizalarning nomlari, raqamlari, bosqichlari va sanalarini oʻz ichiga oladi. Yozishma matnlari va hujjatlar faylga kiritilmaydi. Bu hisobotdagi barcha maʼlumotlar demo versiyaga tegishli.|CSV номҳо, рақамҳо, марҳилаҳо ва санаҳои лоиҳаҳо ва дархостҳои боршударо дар бар мегирад. Матни мукотиба ва ҳуҷҷатҳо ба файл дохил намешаванд. Тамоми маълумоти ин ҳисобот ба нусхаи намоишӣ тааллуқ дорад.
+Рабочие инструменты вашей организации.|Уюмуңуздун иш куралдары.|Tashkilotingizning ish vositalari.|Воситаҳои кории ташкилоти шумо.
+Учебная заявка сохранится только в этом браузере.|Сыноо арызы ушул браузерде гана сакталат.|Oʻquv arizasi faqat shu brauzerda saqlanadi.|Дархости омӯзишӣ танҳо дар ҳамин браузер нигоҳ дошта мешавад.
+Что требуется вашей организации|Уюмуңузга эмне керек|Tashkilotingizga nima kerak|Ба ташкилоти шумо чӣ лозим аст
+Опишите цель, важные обстоятельства и удобный следующий шаг. Не добавляйте паспортные номера и банковские реквизиты.|Максатты, маанилүү жагдайларды жана ыңгайлуу кийинки кадамды сүрөттөңүз. Паспорт номерлерин жана банк реквизиттерин кошпоңуз.|Maqsad, muhim holatlar va qulay keyingi qadamni yozing. Pasport raqamlari va bank rekvizitlarini kiritmang.|Ҳадаф, ҳолатҳои муҳим ва қадами навбатии қулайро шарҳ диҳед. Рақамҳои шиноснома ва маълумоти бонкиро илова накунед.
+Цель и ближайшие шаги|Максат жана жакынкы кадамдар|Maqsad va yaqin qadamlar|Ҳадаф ва қадамҳои наздик
+Этап проекта|Долбоордун этабы|Loyiha bosqichi|Марҳилаи лоиҳа
+Направление|Багыт|Yoʻnalish|Самт
+Что предлагает организация|Уюм эмнени сунуштайт|Tashkilot nimani taklif qiladi|Ташкилот чиро пешниҳод мекунад
+Услуга доступна для совместной работы|Кызмат биргелешкен иш үчүн жеткиликтүү|Xizmat hamkorlik uchun mavjud|Хидмат барои кори муштарак дастрас аст
+Запись остаётся во внутреннем каталоге организации.|Жазуу уюмдун ички каталогунда калат.|Yozuv tashkilotning ichki katalogida qoladi.|Сабт дар феҳристи дохилии ташкилот мемонад.
+Ссылка на документ|Документке шилтеме|Hujjatga havola|Пайванд ба ҳуҷҷат
+Только https://. Доступ к файлу регулируется сервисом, где он хранится.|https:// гана. Файлга кирүү укугун ал сакталган сервис аныктайт.|Faqat https://. Faylga kirish huquqini u saqlanadigan servis belgilaydi.|Танҳо https://. Дастрасӣ ба файлро хадамоте танзим мекунад, ки файл дар он нигоҳ дошта мешавад.
+Тип документа|Документтин түрү|Hujjat turi|Навъи ҳуҷҷат
+с разговора.|баарлашуудан.|suhbatdan.|аз суҳбат.
+Один кабинет.|Бир кабинет.|Bitta kabinet.|Як ҳуҷра.
+обращений.|кайрылуу.|murojaat.|муроҷиат.
+Заполните поля ниже, чтобы начать.|Баштоо үчүн төмөндөгү талааларды толтуруңуз.|Boshlash uchun quyidagi maydonlarni toʻldiring.|Барои оғоз майдонҳои зеринро пур кунед.
+Можно указать имя, которым вам удобно представиться.|Таанышууга ыңгайлуу атын көрсөтсөңүз болот.|Oʻzingizni tanishtirish uchun qulay ismni koʻrsatishingiz mumkin.|Метавонед номеро нависед, ки бо он худро муаррифӣ кардан бароятон қулай аст.
+Пароль не должен быть слишком похож на другую вашу личную информацию.|Сырсөз башка жеке маалыматыңызга өтө окшош болбошу керек.|Parol boshqa shaxsiy maʼlumotlaringizga juda oʻxshamasligi kerak.|Рамз набояд ба дигар маълумоти шахсии шумо хеле монанд бошад.
+Ваш пароль должен содержать как минимум 12 символов.|Сырсөзүңүз кеминде 12 белгиден турушу керек.|Parolingiz kamida 12 belgidan iborat boʻlishi kerak.|Рамзи шумо бояд на камтар аз 12 аломат дошта бошад.
+Пароль не должен быть слишком простым и распространенным.|Сырсөз өтө жөнөкөй жана кеңири колдонулган болбошу керек.|Parol haddan tashqari oddiy yoki keng tarqalgan boʻlmasligi kerak.|Рамз набояд аз ҳад сода ё маъмул бошад.
+Пароль не может состоять только из цифр.|Сырсөз цифралардан гана турбашы керек.|Parol faqat raqamlardan iborat boʻlmasligi kerak.|Рамз набояд танҳо аз рақамҳо иборат бошад.
+Подтверждение пароля|Сырсөздү ырастоо|Parolni tasdiqlash|Тасдиқи рамз
+Для подтверждения введите, пожалуйста, пароль ещё раз.|Ырастоо үчүн сырсөздү дагы бир жолу жазыңыз.|Tasdiqlash uchun parolni yana bir bor kiriting.|Барои тасдиқ рамзро бори дигар ворид кунед.
+Организациям|Уюмдарга|Tashkilotlarga|Ба ташкилотҳо
+Пока здесь пусто. После открытия приёма вы сможете описать ситуацию и следить за ответами в кабинете.|Бул жер азырынча бош. Кабыл алуу ачылганда, кырдаалды сүрөттөп, жоопторду кабинеттен көрө аласыз.|Hozircha bu yer boʻsh. Qabul ochilgach, vaziyatni yozib, javoblarni kabinetdan kuzatishingiz mumkin.|Ҳоло ин ҷо холист. Пас аз оғози қабул метавонед вазъиятро шарҳ диҳед ва ҷавобҳоро дар ҳуҷра пайгирӣ кунед.
+Для первого сообщения не нужно разбираться в юридических терминах.|Алгачкы билдирүү үчүн укуктук терминдерди билүүнүн кереги жок.|Birinchi xabar uchun huquqiy atamalarni bilish shart emas.|Барои паёми аввал донистани истилоҳоти ҳуқуқӣ зарур нест.
+Не добавляйте паспортные номера и банковские реквизиты в описание.|Сүрөттөмөгө паспорт номерлерин жана банк реквизиттерин кошпоңуз.|Tavsifga pasport raqamlari va bank rekvizitlarini kiritmang.|Ба шарҳи масъала рақамҳои шиноснома ва маълумоти бонкиро илова накунед.
+В одном обращении|Бир кайрылууда|Bitta murojaatda|Дар як муроҷиат
+Все уточнения по одной ситуации удобно вести в общей переписке.|Бир кырдаал боюнча бардык тактоолорду бир кат алышууда жүргүзүү ыңгайлуу.|Bir vaziyatga oid barcha aniqliklarni bitta yozishmada yuritish qulay.|Ҳамаи тавзеҳотро оид ба як вазъият дар як мукотиба пеш бурдан қулай аст.
+Опишите вопрос своими словами. Можно начать с самого важного, а детали уточнить позже.|Суроону өз сөзүңүз менен жазыңыз. Эң маанилүүсүнөн баштап, чоо-жайын кийин тактасаңыз болот.|Savolni oʻz soʻzlaringiz bilan yozing. Eng muhimidan boshlab, tafsilotlarni keyin aniqlashtirishingiz mumkin.|Саволро бо суханони худ шарҳ диҳед. Метавонед аз муҳимтаринаш оғоз кунед ва тафсилотро баъдтар равшан намоед.
+Кратко о вопросе|Суроо тууралуу кыскача|Savol haqida qisqacha|Мухтасар дар бораи савол
+Работа и трудовые права|Жумуш жана эмгек укуктары|Ish va mehnat huquqlari|Кор ва ҳуқуқҳои меҳнатӣ
+Адаптация и бытовые вопросы|Көнүү жана турмуш-тиричилик суроолору|Moslashuv va kundalik masalalar|Мутобиқшавӣ ва масъалаҳои рӯзгор
+Подготовка к переезду|Көчүүгө даярдык|Koʻchishga tayyorgarlik|Омодагӣ ба кӯчидан
+Опишите ситуацию|Кырдаалды сүрөттөңүз|Vaziyatni tasvirlang|Вазъиятро шарҳ диҳед
+Не указывайте номера паспортов, банковских карт и другие чувствительные данные. Документы на этом этапе не нужны.|Паспорттун, банк карталарынын номерлерин жана башка купуя маалыматты көрсөтпөңүз. Бул этапта документтер керек эмес.|Pasport, bank kartasi raqamlari va boshqa maxfiy maʼlumotlarni yozmang. Bu bosqichda hujjatlar kerak emas.|Рақамҳои шиноснома, кортҳои бонкӣ ва дигар маълумоти ҳассосро нанависед. Дар ин марҳила ҳуҷҷат лозим нест.
+Город / регион|Шаар / аймак|Shahar / hudud|Шаҳр / минтақа
+Согласен на обработку данных для рассмотрения обращения|Кайрылууну кароо үчүн маалыматтарды иштетүүгө макулмун|Murojaatni koʻrib chiqish uchun maʼlumotlarni qayta ishlashga roziman|Барои баррасии муроҷиат ба коркарди маълумот розӣ ҳастам
+Создать тестовое обращение|Сыноо кайрылуусун түзүү|Sinov murojaatini yaratish|Сохтани муроҷиати озмоишӣ
+После отправки вы увидите номер обращения и сможете продолжить переписку в кабинете.|Жөнөткөндөн кийин кайрылуунун номерин көрүп, кат алышууну кабинетте уланта аласыз.|Yuborgandan keyin murojaat raqamini koʻrasiz va kabinetda yozishmani davom ettirasiz.|Пас аз фиристодан рақами муроҷиатро мебинед ва метавонед мукотибаро дар ҳуҷра идома диҳед.
+Что произошло и какой вопрос нужно решить.|Эмне болду жана кайсы суроону чечүү керек.|Nima boʻldi va qaysi masalani hal qilish kerak.|Чӣ рӯй дод ва кадом масъала бояд ҳал шавад.
+В каком городе вы находитесь или планируете находиться.|Учурда же келечекте кайсы шаарда болосуз.|Qaysi shahardasiz yoki qaysi shaharda boʻlishni rejalashtiryapsiz.|Дар кадом шаҳр ҳастед ё ният доред бошед.
+Есть ли важная дата или срок.|Маанилүү күн же мөөнөт барбы.|Muhim sana yoki muddat bormi.|Сана ё муҳлати муҳим ҳаст ё не.
+Уже писали об этом?|Бул тууралуу мурда жаздыңызбы?|Bu haqda oldin yozganmisiz?|Дар ин бора пештар навиштаед?
+Добавьте сообщение в существующее обращение — так специалист увидит всю историю.|Билдирүүнү мурдагы кайрылууга кошуңуз. Ошондо адис бүт тарыхты көрөт.|Xabarni mavjud murojaatga qoʻshing. Shunda mutaxassis butun tarixni koʻradi.|Паёмро ба муроҷиати мавҷуда илова кунед, то мутахассис тамоми таърихро бинад.
+тестовое обращение|сыноо кайрылуусу|sinov murojaati|муроҷиати озмоишӣ
+Сообщение|Билдирүү|Xabar|Паём
+Новое|Жаңы|Yangi|Нав
+Ожидает вашего ответа|Жообуңузду күтүп жатат|Javobingiz kutilmoqda|Мунтазири ҷавоби шумост
+Решено|Чечилди|Hal qilindi|Ҳал шуд
+Закрыто|Жабык|Yopiq|Баста
+Остановить запись|Жаздырууну токтотуу|Yozuvni toʻxtatish|Қатъ кардани сабт
+Прослушать запись|Жазууну угуу|Yozuvni tinglash|Гӯш кардани сабт
+Удалить запись|Жазууну өчүрүү|Yozuvni oʻchirish|Нест кардани сабт
+Мост поддержки|Колдоо көпүрөсү|Yordam koʻprigi|Пули дастгирӣ
+ПРОСТРАНСТВО ОРГАНИЗАЦИИ|УЮМДУН ИШ МЕЙКИНДИГИ|TASHKILOT ISH MAYDONI|ФАЗОИ КОРИИ ТАШКИЛОТ
+Разговор продолжается.|Маек уланат.|Suhbat davom etadi.|Суҳбат идома меёбад.
+Помощь начинается с разговора.|Жардам баарлашуудан башталат.|Yordam suhbatdan boshlanadi.|Кӯмак аз суҳбат оғоз меёбад.
+Один кабинет. Для ваших обращений.|Кайрылууларыңыз үчүн бир кабинет.|Murojaatlaringiz uchun bitta kabinet.|Як ҳуҷра барои муроҷиатҳои шумо.
 `;
   for (const line of interfaceRows.trim().split('\n')) {
     const [source, ky, uz, tg] = line.split('|');
@@ -948,17 +1057,21 @@ V2 · записи на этом устройстве|V2 · жазуулар б�
       };
       return prefixes[m[1]][code]+': '+t(m[2]);
     }
+    if((m=value.match(/^Ваша роль:\s*(.+)$/)))return t('Ваша роль') + ': ' + t(m[1]);
     if(value.includes(' · '))return value.split(' · ').map(t).join(' · ');
     return str;
   }
   const originalText=new WeakMap(),originalAttrs=new WeakMap();
-  const skip='script,style,textarea,option:not([value]),[data-no-translate],.case-message,.brand strong,.language-option [lang],[data-language-switch] option,[data-editorial-ui]';
+  const skip='script,style,textarea,[data-no-translate],.case-message,.brand strong,.language-option [lang],[data-language-switch] option,[data-editorial-ui]';
   function apply(root=document) {
-    document.documentElement.lang=code;
+    if (document.documentElement.lang !== code) document.documentElement.lang = code;
     const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
     let node;
     while((node=walker.nextNode())) {
       if(!node.parentElement||node.parentElement.closest(skip)||!node.nodeValue.trim())continue;
+      // Preserve the browser's original submission value before changing an implicit option label.
+      const option = node.parentElement.closest('option:not([value])');
+      if (option) option.setAttribute('value', option.value);
       const previous=originalText.get(node);
       // Reusing a text node (e.g. a toast) must not replay an older message.
       const source=!previous||node.nodeValue!==previous.last?node.nodeValue:previous.source;
@@ -973,7 +1086,7 @@ V2 · записи на этом устройстве|V2 · жазуулар б�
         if(!el.hasAttribute(attr))continue;
         const val=el.getAttribute(attr),previous=memory[attr];
         const source=!previous||val!==previous.last?val:previous.source;
-        const translated=t(source);el.setAttribute(attr,translated);memory[attr]={source,last:translated};
+        const translated=t(source);if(val!==translated)el.setAttribute(attr,translated);memory[attr]={source,last:translated};
       }
       originalAttrs.set(el,memory);
     });
