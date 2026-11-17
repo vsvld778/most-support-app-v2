@@ -11,17 +11,44 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
+from django.views.csrf import csrf_failure
 from django.views.decorators.http import require_GET, require_http_methods
 from .access import approved_organizations, partner_cases
 from .forms import CaseMessageForm, EmailAuthenticationForm, SignupForm, SupportCaseForm
 from .models import CaseEvent, CaseMessage, SupportCase
 from .platform_controls import feature_modes
 from .ratelimit import allow_request, client_ip
+from .staff_access import has_desk
 
 class PortalLoginView(LoginView):
     authentication_form = EmailAuthenticationForm
     template_name = "registration/login.html"
     redirect_authenticated_user = True
+
+    def get_default_redirect_url(self):
+        if getattr(settings, "STAFF_SANDBOX", False):
+            if has_desk(self.request.user):
+                return reverse("staff_queue")
+            if approved_organizations(self.request.user).exists():
+                return reverse("partner_dashboard")
+        return super().get_default_redirect_url()
+
+
+def sandbox_csrf_failure(request, reason=""):
+    if request.method != "POST" or request.path != reverse("login"):
+        return csrf_failure(request, reason=reason)
+
+    # Reject the submission and load a fresh form without replaying the credentials.
+    query = {"retry": "1"}
+    next_url = request.POST.get("next")
+    destinations = {
+        reverse("staff_queue"), reverse("partner_dashboard"), reverse("dashboard"),
+        f"{settings.STAFF_BASE}/app/",
+    }
+    if next_url in destinations:
+        query["next"] = next_url
+    return HttpResponse(status=303, headers={"Location": reverse("login", query=query)})
+
 
 class PortalLogoutView(LogoutView):
     http_method_names = ["post", "options"]

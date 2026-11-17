@@ -2,6 +2,8 @@
 (() => {
   'use strict';
   const t = value => window.MOST_I18N?.t(value) || value;
+  const base = document.body.dataset.base || '';
+  const login = base + '/login/?next=' + encodeURIComponent(base + '/partners/');
   const DEMO = document.body.dataset.mode === 'demo';
   const view = document.querySelector('#org-view');
   const dialog = document.querySelector('#org-dialog');
@@ -43,7 +45,7 @@
   const empty = (title, text, ico = 'file', action = '') => `<section class="empty"><span class="icon-box">${icon(ico)}</span><h2>${h(title)}</h2><p>${h(text)}</p>${action}</section>`;
   function notify(message, error = false, extra = '') { feedback.innerHTML = `<div class="notice ${error ? 'error' : ''} feedback" role="${error ? 'alert' : 'status'}"><span>${h(message)}</span>${extra}</div>`; }
   function secureURL(value) { try { const u = new URL(String(value)); return u.protocol === 'https:' && !u.username && !u.password ? u.href : ''; } catch (_) { return ''; } }
-  function apiURL(path, organization = session?.organization?.id) { const url = new URL('/partners/api/' + path, location.origin); if (organization) url.searchParams.set('organization', organization); return url; }
+  function apiURL(path, organization = session?.organization?.id) { const url = new URL(base + '/partners/api/' + path, location.origin); if (organization) url.searchParams.set('organization', organization); return url; }
   async function api(path, options = {}, organization) {
     const response = await fetch(apiURL(path, organization), {credentials:'same-origin',cache:'no-store',...options,headers:{Accept:'application/json',...(options.body ? {'Content-Type':'application/json','X-CSRFToken':session?.csrfToken || ''} : {}),...options.headers}});
     let data; try { data = await response.json(); } catch (_) { const error=new Error(response.status===403?'Срок действия формы истёк или доступ изменился. Обновите кабинет и повторите.':'Сервер вернул неожиданный ответ. Попробуйте ещё раз.'); error.status=response.status; throw error; }
@@ -83,7 +85,12 @@
       document.querySelector('#org-banner').innerHTML='';
       picker.innerHTML='<option>Доступ не подключён</option>';
       const denied=error.status===403, loggedOut=error.status===401;
-      view.innerHTML=empty(loggedOut ? 'Войдите в кабинет' : denied ? 'Доступ организации ещё не подключён' : 'Не удалось открыть кабинет', error.message, 'organization', loggedOut ? '<a class="btn" href="/login/?next=/partners/">Войти</a>' : button('Проверить ещё раз','reload'));
+      const recovery = loggedOut
+        ? `<a class="btn" href="${h(login)}">Войти</a>`
+        : denied
+          ? `<button class="btn" form="org-logout" name="next" value="${h(login)}" type="submit">Войти в кабинет организации</button>`
+          : button('Проверить ещё раз','reload');
+      view.innerHTML=empty(loggedOut ? 'Войдите в кабинет' : denied ? 'Доступ организации ещё не подключён' : 'Не удалось открыть кабинет', error.message, 'organization', recovery);
       renderNav();
     }
   }
@@ -98,15 +105,19 @@
   }
   function renderNav() {
     const active=route.startsWith('request/')?'requests':route;
-    document.querySelector('#org-navigation').innerHTML=visibleNav().map(([id,ico,label]) => `<a class="nav-item" href="#${id}" ${active===id?'aria-current="page"':''}>${icon(ico)}<span>${label}</span>${id==='requests'&&ready&&requests.some(r=>r.status==='waiting')?`<span class="nav-count">${requests.filter(r=>r.status==='waiting').length}</span>`:''}</a>`).join('');
-    const mobile=[nav[0],nav[1],nav[2],nav[3],['more','more','Ещё']];
-    document.querySelector('#org-mobile-nav').innerHTML=mobile.filter(([id]) => sectionMode(id) !== 'off').map(([id,ico,label]) => `<a href="#${id}" ${(active===id || id==='more'&&['services','documents','organization','reports'].includes(active))?'aria-current="page"':''}>${icon(ico)}<span>${label}</span></a>`).join('');
+    const sections=ready ? visibleNav() : [];
+    document.querySelector('#org-navigation').innerHTML=sections.map(([id,ico,label]) => `<a class="nav-item" href="#${id}" ${active===id?'aria-current="page"':''}>${icon(ico)}<span>${label}</span>${id==='requests'&&requests.some(r=>r.status==='waiting')?`<span class="nav-count">${requests.filter(r=>r.status==='waiting').length}</span>`:''}</a>`).join('');
+    const mobile=ready ? [nav[0],nav[1],nav[2],nav[3],['more','more','Ещё']] : [];
+    const mobileNav=document.querySelector('#org-mobile-nav');
+    mobileNav.hidden=!ready;
+    mobileNav.innerHTML=mobile.filter(([id]) => sectionMode(id) !== 'off').map(([id,ico,label]) => `<a href="#${id}" ${(active===id || id==='more'&&['services','documents','organization','reports'].includes(active))?'aria-current="page"':''}>${icon(ico)}<span>${label}</span></a>`).join('');
+    document.querySelector('#org-avatar').hidden=!ready;
   }
   function requestRow(item) { return `<a class="record-row" href="#request/${h(item.id)}"><span class="icon-box blue">${icon('file')}</span><div class="row-copy"><strong data-no-translate>${h(item.title)}</strong><p>${h(item.reference)} · ${h(categories[item.category] || item.category)}</p><div class="record-meta"><span>${h(date(item.updatedAt))}</span>${item.isTest?'<span>Тестовая запись</span>':''}${DEMO?'<span>Локальное демо</span>':''}</div></div>${statusTag(item)}</a>`; }
   function assignedCases(all = false) {
     const cases=!['employer','staffing'].includes(session.organization.kind) && Array.isArray(session.cases) ? session.cases : [];
     if (!cases.length) return '';
-    return `<div class="section-heading"><h2>Назначенные обращения</h2>${!all&&cases.length>3?'<a href="#requests">Все обращения</a>':''}</div><p class="small muted assigned-note">Координатор предоставил организации доступ к этим задачам.</p><div class="record-list">${(all?cases:cases.slice(0,3)).map(item => {const url=/^\/partners\/cases\/[a-f0-9-]+\/$/i.test(item.url||'')?item.url:'';return `<${url?'a':'div'} class="record-row" ${url?`href="${h(url)}"`:''}><span class="icon-box">${icon('people')}</span><div class="row-copy"><strong>${h(item.reference)}</strong><p>${h(item.summary)}</p>${item.nextStep?`<p>${h(item.nextStep)}</p>`:''}</div>${statusTag(item)}</${url?'a':'div'}>`;}).join('')}</div>`;
+    return `<div class="section-heading"><h2>Назначенные обращения</h2>${!all&&cases.length>3?'<a href="#requests">Все обращения</a>':''}</div><p class="small muted assigned-note">Координатор предоставил организации доступ к этим задачам.</p><div class="record-list">${(all?cases:cases.slice(0,3)).map(item => {const path=base+'/partners/cases/'+item.id+'/';const url=/^[a-f0-9-]{36}$/i.test(item.id||'')&&item.url===path?path:'';return `<${url?'a':'div'} class="record-row" ${url?`href="${h(url)}"`:''}><span class="icon-box">${icon('people')}</span><div class="row-copy"><strong>${h(item.reference)}</strong><p>${h(item.summary)}</p>${item.nextStep?`<p>${h(item.nextStep)}</p>`:''}</div>${statusTag(item)}</${url?'a':'div'}>`;}).join('')}</div>`;
   }
   function overview() {
     const active=workspace.data.projects.filter(p=>p.status==='active'), open=requests.filter(r=>!isClosed(r)), waiting=requests.filter(r=>r.status==='waiting');
@@ -161,7 +172,7 @@
       if (!detail?.request || !Array.isArray(detail.messages)) throw new Error('Заявка не найдена или доступ к ней изменился.');
       details.set(id,detail); const r=detail.request;
       document.title=r.reference+' — Мост поддержки';
-      view.innerHTML=`<div class="toolbar">${link('К заявкам','requests','light')}</div>${heading(r.title,r.reference+(DEMO?' · локальное демо':''))}<div class="detail-layout"><div><section class="panel"><div class="card-head"><h2>Вопрос организации</h2>${statusTag(r)}</div><p class="detail-body">${h(r.body)}</p></section><div class="section-heading"><h2>Переписка по заявке</h2></div>${detail.messages.length?`<div class="thread">${detail.messages.map(m=>`<article class="message ${m.isOwn?'mine':''}"><div class="message-header"><strong>${h(m.authorName)}${m.isStaff?' · фонд':''}</strong><time datetime="${h(m.createdAt)}">${h(date(m.createdAt))}</time></div><p>${h(m.body)}</p></article>`).join('')}</div>`:'<div class="notice">Сообщений пока нет. Дополнения и ответы появятся здесь.</div>'}${DEMO?'<div class="notice warm">Демонстрация: сообщения остаются в браузере. Сотрудники фонда их не получают.</div>':''}${canReply()&&!isClosed(r)?`<section class="panel"><h2>Добавить сообщение</h2><form data-form="message" data-id="${h(id)}" class="space-top"><div class="form-error" role="alert"></div>${field('Ваше сообщение','body','',{area:true,required:true,max:4000})}${writeConfirmation()}<button class="btn" type="submit">${DEMO?'Сохранить в демо':'Отправить сообщение'}</button></form></section>`:isClosed(r)?'<div class="notice">Заявка завершена. История переписки сохранена.</div>':'<div class="notice">У вас доступ для просмотра переписки.</div>'}</div><aside class="panel"><dl class="facts"><div><dt>Категория</dt><dd>${h(categories[r.category]||r.category)}</dd></div><div><dt>Проект</dt><dd>${h(projectName(r.projectId))}</dd></div><div><dt>Создана</dt><dd>${h(date(r.createdAt))}</dd></div><div><dt>Обновлена</dt><dd>${h(date(r.updatedAt))}</dd></div></dl><p class="small muted space-top">${DEMO?'Статусы примеров вымышлены.':'Этап заявки меняет сотрудник фонда.'}</p></aside></div>`;
+      view.innerHTML=`<div class="toolbar">${link('К заявкам','requests','light')}</div>${heading(r.title,r.reference+(DEMO?' · локальное демо':''))}<div class="detail-layout"><div><section class="panel"><div class="card-head"><h2>Вопрос организации</h2>${statusTag(r)}</div><p class="detail-body">${h(r.body)}</p>${r.nextStep?`<div class="notice"><strong>Следующий шаг</strong><p data-no-translate>${h(r.nextStep)}</p></div>`:''}</section><div class="section-heading"><h2>Переписка по заявке</h2></div>${detail.messages.length?`<div class="thread">${detail.messages.map(m=>`<article class="message ${m.isOwn?'mine':''}"><div class="message-header"><strong>${h(m.authorName)}${m.isStaff?' · фонд':''}</strong><time datetime="${h(m.createdAt)}">${h(date(m.createdAt))}</time></div><p>${h(m.body)}</p></article>`).join('')}</div>`:'<div class="notice">Сообщений пока нет. Дополнения и ответы появятся здесь.</div>'}${DEMO?'<div class="notice warm">Демонстрация: сообщения остаются в браузере. Сотрудники фонда их не получают.</div>':''}${canReply()&&!isClosed(r)?`<section class="panel"><h2>Добавить сообщение</h2><form data-form="message" data-id="${h(id)}" class="space-top"><div class="form-error" role="alert"></div>${field('Ваше сообщение','body','',{area:true,required:true,max:4000})}${writeConfirmation()}<button class="btn" type="submit">${DEMO?'Сохранить в демо':'Отправить сообщение'}</button></form></section>`:isClosed(r)?'<div class="notice">Заявка завершена. История переписки сохранена.</div>':'<div class="notice">У вас доступ для просмотра переписки.</div>'}</div><aside class="panel"><dl class="facts"><div><dt>Категория</dt><dd>${h(categories[r.category]||r.category)}</dd></div><div><dt>Проект</dt><dd>${h(projectName(r.projectId))}</dd></div><div><dt>Создана</dt><dd>${h(date(r.createdAt))}</dd></div><div><dt>Обновлена</dt><dd>${h(date(r.updatedAt))}</dd></div></dl><p class="small muted space-top">${DEMO?'Статусы примеров вымышлены.':'Этап заявки меняет сотрудник фонда.'}</p></aside></div>`;
     } catch (error) { if(run===detailEpoch && route==='request/'+id)view.innerHTML=empty('Не удалось открыть заявку',error.message,'file',button('Повторить','request-retry','',`data-id="${h(id)}"`)); }
     finally { if(run===detailEpoch && route==='request/'+id)view.removeAttribute('aria-busy'); }
   }
@@ -207,7 +218,7 @@
   function formError(form,error) {
     const target=form.querySelector('.form-error');
     const fieldText=error.fields ? Object.values(error.fields).flat().map(String).join('\n') : '';
-    target.className='form-error notice error'; target.innerHTML=h(error.message)+(fieldText?'<br>'+h(fieldText):'')+(error.status===409?'<p>Ваш ввод остаётся в форме. Скопируйте нужный текст перед обновлением.</p>'+button('Загрузить актуальные данные','reload','light'):error.status===401?'<p><a href="/login/?next=/partners/">Войти снова</a></p>':''); target.tabIndex=-1;target.focus();
+    target.className='form-error notice error'; target.innerHTML=h(error.message)+(fieldText?'<br>'+h(fieldText):'')+(error.status===409?'<p>Ваш ввод остаётся в форме. Скопируйте нужный текст перед обновлением.</p>'+button('Загрузить актуальные данные','reload','light'):error.status===401?`<p><a href="${h(login)}">Войти снова</a></p>`:''); target.tabIndex=-1;target.focus();
   }
   const str=(data,key,max)=>String(data.get(key)||'').trim().slice(0,max);
   async function submit(form,data) {

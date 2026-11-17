@@ -1,0 +1,19 @@
+{% load static %}
+<!doctype html><html lang="ru"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Очередь{% endblock %} — Мост поддержки</title>
+<link rel="stylesheet" href="{% static 'staff/desk.css' %}">
+<link rel="icon" href="{% static 'portal/logo-mark.webp' %}">
+</head><body>
+<a class="skip" href="#content">К содержанию</a>
+<header class="top"><div class="top-inner">
+<a class="brand" href="{% url 'staff_queue' %}"><img src="{% static 'portal/logo-mark.webp' %}" width="38" height="42" alt=""><span>Мост поддержки<small>Кабинет сотрудника</small></span></a>
+<div class="account"><span>{{ user.display_name|default:"Сотрудник" }}</span>
+{% if user.is_superuser and not sandbox %}<a href="{% url 'admin:index' %}">Управление</a>{% endif %}
+<form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="quiet" type="submit">Выйти</button></form>
+</div></div></header>
+<main id="content">
+{% if sandbox %}<p class="environment" role="note">Тестовая среда. Используйте только вымышленные данные.</p>{% endif %}
+{% for message in messages %}<p class="feedback" role="status">{{ message }}</p>{% endfor %}
+{% block content %}{% endblock %}
+</main></body></html>

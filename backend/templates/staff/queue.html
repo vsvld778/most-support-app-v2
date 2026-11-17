@@ -1,0 +1,22 @@
+{% extends 'staff/base.html' %}
+{% block content %}
+<div class="heading"><div><h1>Очередь центра</h1><p>Обращения мигрантов и заявки организаций</p></div>
+{% if desk_groups %}<ul class="teams" aria-label="Ваши команды">{% for group in desk_groups %}<li>{{ group.team.name }} · {{ group.get_role_display }}</li>{% endfor %}</ul>{% endif %}</div>
+<nav class="tabs" aria-label="Вид очереди">
+{% for key, label in views %}<a href="?view={{ key }}{% if kind %}&amp;kind={{ kind|urlencode }}{% endif %}{% if term %}&amp;q={{ term|urlencode }}{% endif %}"{% if key == selection %} aria-current="page"{% endif %}>{{ label }}</a>{% endfor %}
+</nav>
+<form method="get" class="filters" action="{% url 'staff_queue' %}">
+<input name="view" type="hidden" value="{{ selection }}">
+<label>Поиск по номеру или теме <input name="q" maxlength="100" type="search" value="{{ term }}" placeholder="Например, MP-000001"></label>
+<label>Источник <select name="kind"><option value="">Все</option><option value="mp"{% if kind == 'mp' %} selected{% endif %}>Мигранты</option><option value="org"{% if kind == 'org' %} selected{% endif %}>Организации</option></select></label>
+<button type="submit">Найти</button></form>
+<div class="records">
+{% for item in items %}
+<a class="record" href="{{ item.desk_url }}">
+<span class="record-title"><small>{{ item.reference }}</small><strong>{{ item.title }}</strong></span>
+<span><span class="badge">{{ item.get_status_display }}</span><small>{{ item.updated_at|date:"d.m.Y H:i" }}</small></span>
+<span><strong>{{ item.desk_assignment.team.name|default:"Приём фонда" }}</strong><small>{{ item.desk_assignment.assignee.display_name|default:"Без ответственного" }}</small></span>
+</a>
+{% empty %}<div class="panel"><h2>В этой очереди пока пусто</h2><p>Измените фильтр, чтобы посмотреть другие дела.</p></div>{% endfor %}
+</div>
+{% endblock %}

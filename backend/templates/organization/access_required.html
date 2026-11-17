@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Кабинет организации{% endblock %}
+{% block content %}
+<section class="error-page" aria-labelledby="organization-access-title">
+  <p class="eyebrow">Кабинет организации</p>
+  <h1 id="organization-access-title">Доступ организации ещё не подключён</h1>
+  <p>Координатор должен подтвердить организацию и добавить вас в её команду.</p>
+  <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ organization_login_url }}">
+    <button class="button" type="submit">Войти в кабинет организации</button>
+  </form>
+  <p class="auth-alt"><a href="{% url 'cabinet_entry' %}">Выбрать кабинет</a></p>
+</section>
+{% endblock %}

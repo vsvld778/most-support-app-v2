@@ -284,6 +284,8 @@ def request_presentation(item, detail=False):
         "createdAt": item.created_at.isoformat(), "updatedAt": item.updated_at.isoformat()}
     if detail:
         result["body"] = item.body
+        assignment = getattr(item, "staff_assignment", None)
+        result["nextStep"] = assignment.next_step if assignment else ""
     return result
 
 

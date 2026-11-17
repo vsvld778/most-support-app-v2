@@ -285,3 +285,4 @@ class OrganizationEventAdmin(ImmutableOrganizationAdmin):
 
 
 from . import platform_admin  # noqa: E402,F401
+from . import staff_admin  # noqa: E402,F401

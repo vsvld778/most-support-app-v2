@@ -198,7 +198,7 @@ class CaseMessage(models.Model):
 
     @property
     def author_display(self):
-        if self.author.is_staff:
+        if self.author.is_staff or (self.audience == self.Audience.APPLICANT and self.author_id != self.case.owner_id):
             return "Координатор фонда"
         if self.audience == self.Audience.PARTNER:
             return "Представитель организации"
@@ -247,3 +247,4 @@ from .platform_controls import ContentBlock, ContentRevision, FeatureSetting  # 
 
 # Register editorial models in the portal migration graph.
 from .editorial import EditorialImage, EditorialPage  # noqa: E402,F401
+from .staff_models import StaffAssignment, StaffMembership, StaffOrganizationNote, StaffTeam  # noqa: E402,F401

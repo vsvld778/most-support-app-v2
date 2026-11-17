@@ -1,0 +1,29 @@
+{% extends 'staff/base.html' %}
+{% block title %}{{ record.reference }}{% endblock %}
+{% block content %}
+<a class="back" href="{% url 'staff_queue' %}">← Очередь центра</a>
+<div class="heading">
+<div><p>{{ record.reference }}{% if record.is_test %} · Тестовая запись{% endif %}</p><h1>{{ record.title }}</h1></div>
+<span class="badge">{{ record.get_status_display }}</span></div>
+<div class="case-grid"><div class="case-content">
+<section class="panel section"><h2>Описание</h2>
+<p>{{ participant }} · {{ record.get_category_display }}{% if record.city %} · {{ record.city }}{% endif %}{% if record.preferred_language %} · {{ record.get_preferred_language_display }}{% endif %}</p>
+<div class="body-text">{{ description|linebreaksbr }}</div></section>
+{% include 'staff/action.html' with title="Ответить" form=forms.reply action="reply" button="Отправить ответ" audience=participant %}
+{% if partner %}{% include 'staff/action.html' with title="Совместная переписка" form=forms.partner action="partner" button="Отправить в общую ветку" audience=partner.name %}{% endif %}
+{% include 'staff/action.html' with title="Внутренняя заметка" form=forms.note action="note" button="Сохранить заметку" audience="Видна только сотрудникам, у которых есть доступ к этому делу." %}
+<section class="panel section"><h2>Переписка</h2>
+{% for date, author, body, audience in thread %}
+<article class="thread"><div><strong>{{ author.display_name|default:"Участник" }}</strong><time>{{ date|date:"d.m.Y H:i" }}</time></div>
+<small>{{ audience }}</small><p class="body-text">{{ body|linebreaksbr }}</p></article>
+{% empty %}<p class="muted">Сообщений пока нет.</p>{% endfor %}</section>
+</div><aside class="case-side">
+<section class="panel section"><h2>Назначение</h2><dl><dt>Команда</dt><dd>{{ team.name }}</dd><dt>Ответственный</dt><dd>{{ assignment.assignee.display_name|default:"Без ответственного" }}</dd>
+{% if assignment.due %}<dt>Следующий контакт</dt><dd>{{ assignment.due|date:"d.m.Y H:i" }} МСК</dd>{% endif %}</dl>
+{% if not external %}<p class="muted">Внешняя переписка сейчас закрыта.</p>{% endif %}</section>
+{% include 'staff/action.html' with title="Статус и следующий шаг" form=forms.step action="step" button="Сохранить" %}
+{% include 'staff/action.html' with title="Назначить дело" form=forms.assign action="assign" button="Подтвердить назначение" %}
+<section class="panel section"><h2>История действий</h2><ul class="history">
+{% for event in timeline %}<li><strong>{% if event.event_type == "staff_step" %}Обновлён статус или следующий шаг{% elif event.event_type == "staff_assigned" %}Изменено назначение{% elif event.event_type == "staff_message" %}Сохранено сообщение{% elif event.event_type == "staff_note" %}Сохранена внутренняя заметка{% else %}Запись обновлена{% endif %}</strong><small>{{ event.created_at|date:"d.m.Y H:i" }}{% if event.actor %} · {{ event.actor.display_name }}{% endif %}</small></li>{% empty %}<li>Событий пока нет.</li>{% endfor %}
+</ul></section></aside></div>
+{% endblock %}

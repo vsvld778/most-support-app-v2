@@ -1,8 +1,12 @@
 from django.urls import path
 from django.views.generic import RedirectView
-from . import editorial_views, views, organization_api, organization_ui, platform_views, workspace_api
+from . import mobile_cases, staff_views, editorial_views, views, organization_api, organization_ui, platform_views, workspace_api
 
 urlpatterns = [
+    path("staff/", staff_views.queue, name="staff_queue"),
+    path("staff/<str:kind>/<uuid:public_id>/", staff_views.case_detail, name="staff_case"),
+    path("api/v2/cases/", mobile_cases.inbox, name="mobile_cases"),
+    path("api/v2/cases/<uuid:public_id>/", mobile_cases.detail, name="mobile_case"),
     path("api/public/editorial/<str:surface>/<path:page>/", editorial_views.publication, name="editorial_publication"),
     path("editorial-images/<uuid:key>/", editorial_views.image, name="editorial_image"),
     path("cabinet/", platform_views.entry, name="cabinet_entry"),
