@@ -121,10 +121,8 @@
       .direct { font-size: 12px; }
       .stage { padding-top: 4px; }
     }
-    @media (prefers-color-scheme: dark) {
-      :root { background: #111e1d; color: #e3eee8; color-scheme: dark; }
-      .direct { color: #9ed8ce; }
-    }
+    :root[data-theme="dark"] { background: #111e1d; color: #e3eee8; color-scheme: dark; }
+    :root[data-theme="dark"] .direct { color: #9ed8ce; }
   </style>
 </head>
 <body>
@@ -152,11 +150,21 @@
       </div>
     </div>
   </main>
+  <template id="preview-app-style">
+    <style>
+      :root { scrollbar-width: none; }
+      .topbar .top-actions .theme-toggle { display: grid; }
+      #workspace-banner[data-status="local"] > :is(.mode-dot, #workspace-status) { display: none; }
+      #workspace-banner[data-status="local"] { justify-content: end; margin-bottom: 8px; }
+    </style>
+  </template>
   <script>
     const stage = document.querySelector(".stage");
     const slot = document.querySelector(".frame-slot");
     const phone = document.querySelector(".phone");
     const app = document.querySelector("iframe");
+    const previewStyle = document.querySelector("#preview-app-style");
+    const themeColor = document.querySelector('meta[name="theme-color"]');
 
     function fitPhone() {
       const maxScale = Math.min(1, stage.clientWidth / phone.offsetWidth);
@@ -168,16 +176,22 @@
       phone.style.transform = `scale(${scale})`;
     }
 
-    // Follow the application's selected theme in the simulated system bars.
     let themeObserver;
-    function matchAppTheme() {
+    function configureAppPreview() {
       themeObserver?.disconnect();
-      const appRoot = app.contentDocument?.documentElement;
-      if (!appRoot) return;
-      // Preserve the full 440 px layout width while keeping the page scrollable.
-      appRoot.style.scrollbarWidth = "none";
+      const appDocument = app.contentDocument;
+      if (!appDocument?.head) return;
+      if (!appDocument.getElementById(previewStyle.id)) {
+        const style = appDocument.importNode(previewStyle.content.firstElementChild, true);
+        style.id = previewStyle.id;
+        appDocument.head.append(style);
+      }
+      const appRoot = appDocument.documentElement;
       const update = () => {
-        phone.dataset.theme = appRoot.dataset.theme || "light";
+        const theme = appRoot.dataset.theme || "light";
+        phone.dataset.theme = theme;
+        document.documentElement.dataset.theme = theme;
+        themeColor.content = theme === "dark" ? "#111e1d" : "#eef3f0";
       };
       update();
       themeObserver = new MutationObserver(update);
@@ -186,8 +200,8 @@
 
     fitPhone();
     window.addEventListener("resize", fitPhone);
-    app.addEventListener("load", matchAppTheme);
-    matchAppTheme();
+    app.addEventListener("load", configureAppPreview);
+    configureAppPreview();
   </script>
 </body>
 </html>
