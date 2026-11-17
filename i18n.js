@@ -3,9 +3,13 @@
   'use strict';
   const languages = [
     {code:'ru', name:'Русский', flag:'🇷🇺', locale:'ru-RU', short:'RU'},
-    {code:'ky', name:'Кыргызча', flag:'🇰🇬', locale:'ky-KG', short:'KY'},
+    {code:'en', name:'English', flag:'🇬🇧', locale:'en-GB', short:'EN'},
+    {code:'tg', name:'Тоҷикӣ', flag:'🇹🇯', locale:'tg-TJ', short:'TG'},
     {code:'uz', name:'Oʻzbekcha', flag:'🇺🇿', locale:'uz-UZ', short:'UZ'},
-    {code:'tg', name:'Тоҷикӣ', flag:'🇹🇯', locale:'tg-TJ', short:'TG'}
+    {code:'kk', name:'Қазақша', flag:'🇰🇿', locale:'kk-KZ', short:'KK'},
+    {code:'ky', name:'Кыргызча', flag:'🇰🇬', locale:'ky-KG', short:'KY'},
+    {code:'be', name:'Беларуская', flag:'🇧🇾', locale:'be-BY', short:'BE'},
+    {code:'hi', name:'हिन्दी', flag:'🇮🇳', locale:'hi-IN', short:'HI'}
   ];
   const key='most-support-v2-language';
   let code='ru';
@@ -581,8 +585,41 @@ Push-уведомления и SMS пока не подключены.|Push-би
 Выполненные шаги|Аткарылган кадамдар|Bajarilgan qadamlar|Қадамҳои иҷрошуда
 В календарь|Календарга|Taqvimga|Ба тақвим
 Дата пока не указана|Дата азырынча көрсөтүлгөн жок|Sana hali koʻrsatilmagan|Сана ҳоло нишон дода нашудааст
+Оглавление|Мазмуну|Mundarija|Мундариҷа
+Оглавление приложения|Колдонмонун мазмуну|Ilova mundarijasi|Мундариҷаи барнома
+Основные разделы|Негизги бөлүмдөр|Asosiy boʻlimlar|Бахшҳои асосӣ
+Открыть без рамки|Алкаксыз ачуу|Ramkasiz ochish|Бе чорчӯба кушодан
+Мост поддержки в мобильном режиме|«Мост поддержки» мобилдик көрүнүшү|«Мост поддержки» mobil koʻrinishi|Намуди мобилии «Мост поддержки»
 `;
   modernRows.trim().split('\n').forEach(row=>{const [ru,ky,uz,tg]=row.split('|');if(ru&&ky&&uz&&tg&&!translations[ru])translations[ru]={ky,uz,tg};});
+  for (const row of (window.MOST_SITE_LANGUAGE_ROWS || '').trim().split('\n')) {
+    const [ru,en,kk,be,hi] = row.split('|');
+    if (ru && en && kk && be && hi) translations[ru] = {...translations[ru], en, kk, be, hi};
+  }
+  const regionalFormats = {
+    en: {progress:(done,total)=>`${done} of ${total}`, attachments:n=>`${n} ${n==='1'?'attachment':'attachments'}`, totalHours:n=>`Total: ${n} h`, inRussia:', Russia'},
+    kk: {progress:(done,total)=>`${total} қадамның ${done}-і`, attachments:n=>`${n} тіркеме`, totalHours:n=>`Барлығы: ${n} сағ`, inRussia:', Ресей'},
+    be: {progress:(done,total)=>`${done} з ${total}`, attachments:n=>{
+      const number=Number(n), mod10=number%10, mod100=number%100;
+      const word=mod10===1&&mod100!==11?'ўкладанне':mod10>=2&&mod10<=4&&(mod100<12||mod100>14)?'ўкладанні':'ўкладанняў';
+      return `${n} ${word}`;
+    }, totalHours:n=>`Усяго: ${n} гадз.`, inRussia:', Расія'},
+    hi: {progress:(done,total)=>`${total} में से ${done}`, attachments:n=>`${n} अटैचमेंट`, totalHours:n=>`कुल: ${n} घंटे`, inRussia:', रूस'}
+  };
+  function regionalText(value,format) {
+    const parts=value.split(' · ');
+    if (parts.length>1) return parts.map(t).join(' · ');
+    let match;
+    if ((match=value.match(/^(Файлы:|Материалов:)\s*(\d+)$/))) return t(match[1])+' '+match[2];
+    if ((match=value.match(/^(\d+) вложений$/))) return format.attachments(match[1]);
+    if ((match=value.match(/^(\d+) из (\d+)(?: шагов)?$/))) return format.progress(match[1],match[2]);
+    if ((match=value.match(/^(\d+(?:[.,]\d+)?) ч\. за всё время$/))) return format.totalHours(match[1]);
+    if ((match=value.match(/^(Добрый день,)\s*(.+)$/))) return t(match[1])+' '+match[2];
+    if ((match=value.match(/^(Выполнить задачу|Вернуть задачу|Выполнить|Вернуть в работу|Изменить|Удалить|Скачать|До|Создано):? (.+)$/))) {
+      return t(match[1])+': '+match[2];
+    }
+    if ((match=value.match(/^(.+), Россия$/))) return t(match[1])+format.inRussia;
+  }
   const current=()=>languages.find(l=>l.code===code)||languages[0];
   const locale=()=>current().locale;
   const norm=s=>s.replace(/\s+/g,' ').trim();
@@ -590,6 +627,8 @@ Push-уведомления и SMS пока не подключены.|Push-би
     const str=String(text??''); if(code==='ru')return str;
     const value=norm(str), exact=translations[value]?.[code];
     if(exact)return str.replace(str.trim(),exact);
+    const format=regionalFormats[code];
+    if(format)return regionalText(value,format)??str;
     let m;
     if((m=value.match(/^(Файлы:|Материалов:)\s*(\d+)$/)))return t(m[1])+' '+m[2];
     if((m=value.match(/^(\d+) вложений$/)))return ({ky:`${m[1]} тиркеме`,uz:`${m[1]} ta ilova`,tg:`${m[1]} замима`})[code];
