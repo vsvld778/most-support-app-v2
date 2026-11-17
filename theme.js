@@ -17,7 +17,7 @@
     const mode = resolved();
     document.documentElement.dataset.theme = mode;
     document.documentElement.style.colorScheme = mode;
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', mode === 'dark' ? '#0f1e20' : '#faf8f2');
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', mode === 'dark' ? '#101f20' : '#f5f7f6');
     document.querySelectorAll('[data-action="theme"]').forEach(button => {
       button.innerHTML = icon(mode);
       button.dataset.themeMode = mode;

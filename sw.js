@@ -1,5 +1,5 @@
-const CACHE='most-support-v2-shell-2';
-const SHELL=['./','./index.html','./styles.css?v=2.1.0','./appearance.css?v=2.0.0','./theme.js?v=2.0.0','./icons.js','./i18n.js?v=2.0.0','./app.js?v=2.1.0','./sync.js?v=2.1.0','./modules/plan.js?v=2.0.0','./modules/work.js?v=2.0.0','./modules/life.js?v=2.0.0','./modules/help.js?v=2.0.0','./manifest.webmanifest','./assets/logo-mark.webp','./assets/hero-people.webp'];
+const CACHE='most-support-v2-shell-3';
+const SHELL=['./','./index.html','./styles.css?v=3.0.0','./modern.css?v=3.0.0','./modern-plan.css?v=3.0.0','./modern-help.css?v=3.0.0','./appearance.css?v=2.0.0','./theme.js?v=3.0.0','./icons.js','./i18n.js?v=3.0.0','./app.js?v=3.0.0','./sync.js?v=2.2.0','./modules/plan.js?v=3.0.0','./modules/work.js?v=2.0.0','./modules/life.js?v=2.0.0','./modules/help.js?v=3.0.0','./manifest.webmanifest','./assets/logo-mark.webp','./assets/hero-people.webp'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('most-support-v2-shell-')&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',event=>{
