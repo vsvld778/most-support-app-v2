@@ -1,6 +1,10 @@
 /* Runs before styles to avoid a flash of the wrong appearance. */
 (() => {
   'use strict';
+  const mobileView = new URLSearchParams(location.search).get('view') === 'mobile'
+    || window.navigator.standalone === true
+    || window.matchMedia?.('(display-mode: standalone)').matches;
+  if (mobileView) document.documentElement.dataset.view = 'mobile';
   const key = 'most-support-v2-theme';
   const modes = ['light', 'dark', 'system'];
   const labels = {light:'Светлая', dark:'Тёмная', system:'Как на устройстве'};

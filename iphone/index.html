@@ -7,6 +7,16 @@
   <meta name="description" content="Интерактивный «Мост поддержки» в рамке iPhone 18 Pro Max.">
   <title>Мост поддержки · iPhone 18 Pro Max</title>
   <link rel="icon" href="../assets/logo-mark.webp">
+  <script>
+    const keepFrame = new URLSearchParams(location.search).get("frame") === "1";
+    const handheld = matchMedia("(max-width: 700px), (max-width: 1000px) and (pointer: coarse)");
+    if (handheld.matches && !keepFrame) {
+      const destination = new URL("../", location.href);
+      destination.searchParams.set("view", "mobile");
+      destination.hash = location.hash;
+      location.replace(destination.href);
+    }
+  </script>
   <style>
     :root {
       --panel: #fbfdfb;

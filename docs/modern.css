@@ -25,3 +25,34 @@ dialog{background:var(--surface);border-radius:24px;box-shadow:0 24px 80px #122e
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important}}
 
 [data-theme=dark] .chip.active,[data-theme=dark] .chip[aria-pressed=true]{background:var(--ink);color:var(--canvas);border-color:var(--ink)}
+
+html[data-view="mobile"] #workspace-banner[data-status="local"] > :is(.mode-dot, #workspace-status) {
+  display: none;
+}
+html[data-view="mobile"] #workspace-banner[data-status="local"] {
+  justify-content: end;
+  margin-bottom: 8px;
+}
+html[data-view="mobile"] .topbar .top-actions .theme-toggle { display: grid; }
+@media (max-width: 760px) {
+  html[data-view="mobile"] body { min-height: 100vh; min-height: 100dvh; }
+  html[data-view="mobile"] .topbar {
+    height: auto;
+    min-height: calc(78px + env(safe-area-inset-top));
+    padding-top: calc(12px + env(safe-area-inset-top));
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  html[data-view="mobile"] .content { padding-bottom: calc(108px + env(safe-area-inset-bottom)); }
+  html[data-view="mobile"] .bottom-nav a { justify-content: flex-start; padding-top: 8px; }
+  html[data-view="mobile"] .bottom-nav a span {
+    max-width: 100%;
+    font-size: 11px;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+  html[data-view="mobile"] :is(.home-heading, .page-heading) h1 { overflow-wrap: anywhere; }
+}
+@media (max-width: 370px) {
+  html[data-view="mobile"] .bottom-nav a span { font-size: 9.5px; }
+}
