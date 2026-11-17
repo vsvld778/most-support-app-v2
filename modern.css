@@ -26,6 +26,29 @@ dialog{background:var(--surface);border-radius:24px;box-shadow:0 24px 80px #122e
 
 [data-theme=dark] .chip.active,[data-theme=dark] .chip[aria-pressed=true]{background:var(--ink);color:var(--canvas);border-color:var(--ink)}
 
+/* Gaps within a grid or stack come from its container, not the cards. */
+:is(.cards, .stack, .stats) > .panel {
+  min-width: 0;
+  margin: 0;
+}
+.toolbar, .button-row { align-items: stretch; }
+:is(.toolbar, .button-row) > .btn { max-width: 100%; }
+.form-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+:is(.form-grid, .settings-row) > * { min-width: 0; }
+.modal-head > div { min-width: 0; }
+.modal-head h2, .page-heading h1, .card-head h2 { overflow-wrap: anywhere; }
+
+@media (max-width: 760px) {
+  .form-grid { grid-template-columns: minmax(0, 1fr); }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stats > .stat:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .stats > .stat:not(:only-child) > p { line-height: 1.5; min-height: 3em; }
+  .stats > .stat:last-child:nth-child(odd) > p { min-height: 0; }
+  .stats > .stat > strong { margin-top: 8px; }
+  .content { padding-bottom: calc(108px + env(safe-area-inset-bottom)); }
+  .btn { overflow-wrap: anywhere; }
+}
+
 html[data-view="mobile"] #workspace-banner[data-status="local"] > :is(.mode-dot, #workspace-status) {
   display: none;
 }
@@ -43,7 +66,6 @@ html[data-view="mobile"] .topbar .top-actions .theme-toggle { display: grid; }
     padding-left: max(16px, env(safe-area-inset-left));
     padding-right: max(16px, env(safe-area-inset-right));
   }
-  html[data-view="mobile"] .content { padding-bottom: calc(108px + env(safe-area-inset-bottom)); }
   html[data-view="mobile"] .bottom-nav a { justify-content: flex-start; padding-top: 8px; }
   html[data-view="mobile"] .bottom-nav a span {
     max-width: 100%;
