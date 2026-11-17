@@ -606,6 +606,41 @@ Push-уведомления и SMS пока не подключены.|Push-би
     }, totalHours:n=>`Усяго: ${n} гадз.`, inRussia:', Расія'},
     hi: {progress:(done,total)=>`${total} में से ${done}`, attachments:n=>`${n} अटैचमेंट`, totalHours:n=>`कुल: ${n} घंटे`, inRussia:', रूस'}
   };
+  const formatHours = {
+    en:n=>`${n} ${n==='1'?'hour':'hours'}`,
+    tg:n=>`${n} соат`,
+    uz:n=>`${n} soat`,
+    kk:n=>`${n} сағат`,
+    ky:n=>`${n} саат`,
+    be:n=>{
+      const forms={one:'гадзіна',few:'гадзіны',many:'гадзін',other:'гадзіны'};
+      const kind=new Intl.PluralRules('be').select(Number(n.replace(',','.')));
+      return `${n} ${forms[kind]}`;
+    },
+    hi:n=>`${n} घंटे`
+  };
+  const supplemental = window.MOST_EXTENDED_COPY || {};
+  function lookup(key, language=code) {
+    const extra=supplemental[language]?.[key];
+    return translations[key]?.[language] || (typeof extra==='string' ? extra : undefined);
+  }
+  function mixedText(value) {
+    let match;
+    if ((match=value.match(/^Файл «(.+)» больше 10 МБ\.$/))) {
+      return lookup('Файл {0} больше 10 МБ.')?.replace('{0}',()=>match[1]);
+    }
+    if (/^Проверьте значение в поле «.+»\.$/.test(value)) return lookup('Проверьте введённое значение.');
+    if ((match=value.match(/^(\d+)-е число$/))) return lookup('День {0}')?.replace('{0}',match[1]);
+    if ((match=value.match(/^(\d+(?:[.,]\d+)?) часов$/))) return formatHours[code](match[1]);
+    if ((match=value.match(/^(Удалить шаг|Удалить файл|Изменить дату|Изменить|Удалить|Скачать) (.+)$/))) {
+      const label=lookup(match[1]);
+      if(label)return label+': '+match[2];
+    }
+    if ((match=value.match(/^([^:]{1,80}):\s+(.+)$/))) {
+      const label=lookup(match[1]+':') || (lookup(match[1]) ? lookup(match[1])+':' : '');
+      if(label)return label+' '+(match[1]==='Ситуация' ? t(match[2]) : match[2]);
+    }
+  }
   function regionalText(value,format) {
     const parts=value.split(' · ');
     if (parts.length>1) return parts.map(t).join(' · ');
@@ -625,8 +660,10 @@ Push-уведомления и SMS пока не подключены.|Push-би
   const norm=s=>s.replace(/\s+/g,' ').trim();
   function t(text) {
     const str=String(text??''); if(code==='ru')return str;
-    const value=norm(str), exact=translations[value]?.[code];
-    if(exact)return str.replace(str.trim(),exact);
+    const value=norm(str), exact=lookup(value);
+    if(exact)return str.replace(str.trim(),()=>exact);
+    const mixed=mixedText(value);
+    if(mixed)return str.replace(str.trim(),()=>mixed);
     const format=regionalFormats[code];
     if(format)return regionalText(value,format)??str;
     let m;
@@ -646,6 +683,26 @@ Push-уведомления и SMS пока не подключены.|Push-би
   }
   const originalText=new WeakMap(),originalAttrs=new WeakMap();
   const skip='script,style,textarea,option:not([value]),[data-no-translate],.case-message,.brand strong,.language-option [lang]';
+  function localizeFileControls(root) {
+    root.querySelectorAll('input[type="file"]').forEach(input=>{
+      let control=input.closest('.app-file-control');
+      if(!control){
+        control=document.createElement('span');
+        control.className='app-file-control';
+        control.innerHTML='<span class="app-file-trigger" aria-hidden="true"></span><span class="app-file-selection" aria-live="polite"></span>';
+        input.before(control);
+        control.prepend(input);
+        input.addEventListener('change',()=>updateFileNames(input,control));
+      }
+      control.querySelector('.app-file-trigger').textContent=t(input.multiple?'Выбрать файлы':'Выбрать файл');
+      control.setAttribute('data-no-translate','');
+      updateFileNames(input,control);
+    });
+  }
+  function updateFileNames(input,control) {
+    control.querySelector('.app-file-selection').textContent=
+      Array.from(input.files||[],file=>file.name).join(', ') || t('Файлы не выбраны');
+  }
   function apply(root=document) {
     document.documentElement.lang=code;
     const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
@@ -670,10 +727,11 @@ Push-уведомления и SMS пока не подключены.|Push-би
       }
       originalAttrs.set(el,memory);
     });
+    localizeFileControls(root);
     return root;
   }
   function openPicker() {
-    openModal('Язык приложения','Понятно на вашем языке.',`<div class="language-list" role="group" aria-label="Выбрать язык">${languages.map(l=>`<button type="button" class="language-option ${l.code===code?'selected':''}" data-set-language="${l.code}" aria-pressed="${l.code===code}"><span class="language-flag" aria-hidden="true">${l.flag}</span><span lang="${l.code}" data-no-translate>${l.name}</span><span class="language-check" aria-hidden="true">${l.code===code?ic('check'):''}</span></button>`).join('')}</div><p class="language-note">Выбор сохранится на этом устройстве.</p><p class="language-note">Навигация и основные кнопки переведены. Новые подробные сценарии пока на русском; ваши записи — на языке оригинала.</p>`);
+    openModal('Язык приложения','Понятно на вашем языке.',`<div class="language-list" role="group" aria-label="Выбрать язык">${languages.map(l=>`<button type="button" class="language-option ${l.code===code?'selected':''}" data-set-language="${l.code}" aria-pressed="${l.code===code}"><span class="language-flag" aria-hidden="true">${l.flag}</span><span lang="${l.code}" data-no-translate>${l.name}</span><span class="language-check" aria-hidden="true">${l.code===code?ic('check'):''}</span></button>`).join('')}</div><p class="language-note">Выбор сохранится на этом устройстве.</p><p class="language-note">Ваши записи сохраняются на языке оригинала.</p>`);
     apply(document.querySelector('#modal'));
   }
   function set(next) {
@@ -685,6 +743,6 @@ Push-уведомления и SMS пока не подключены.|Push-би
     requestAnimationFrame(()=>document.querySelector('[data-action="app:language"]')?.focus({preventScroll:true}));
   }
   document.addEventListener('click',e=>{const el=e.target.closest('[data-set-language]');if(el)set(el.dataset.setLanguage);});
-  window.MOST_I18N={languages,current,locale,t,apply,openPicker,set,guideNote:()=>code==='ru'?'':`<div class="notice">${t('Памятка пока доступна на русском языке.')}</div>`};
+  window.MOST_I18N={languages,current,locale,t,copy:(source,language)=>lookup(norm(source),language)||source,apply,openPicker,set,guideNote:()=>code==='ru'?'':`<div class="notice">${t('Памятка пока доступна на русском языке.')}</div>`};
   document.documentElement.lang=code;
 })();

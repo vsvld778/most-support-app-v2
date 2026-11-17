@@ -37,6 +37,33 @@ dialog{background:var(--surface);border-radius:24px;box-shadow:0 24px 80px #122e
 :is(.form-grid, .settings-row) > * { min-width: 0; }
 .modal-head > div { min-width: 0; }
 .modal-head h2, .page-heading h1, .card-head h2 { overflow-wrap: anywhere; }
+.app-file-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 50px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--surface);
+}
+.app-file-control input[type="file"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.app-file-control:focus-within { outline: 3px solid var(--danger); outline-offset: 4px; }
+.app-file-trigger {
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: var(--raised);
+  color: var(--green);
+}
+.app-file-selection { min-width: 0; color: var(--muted); overflow-wrap: anywhere; }
 
 @media (max-width: 760px) {
   .form-grid { grid-template-columns: minmax(0, 1fr); }
