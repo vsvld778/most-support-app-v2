@@ -1,0 +1,456 @@
+/* Migrant Wallet palette for the existing Sphere Design 10 screens.
+   The original navigation, card artwork, service illustrations and forms
+   keep their own structure. This layer is loaded after the Design 10 CSS. */
+:root[data-theme] {
+  --canvas: #f5f7f6;
+  --surface: #fff;
+  --raised: #edf2ef;
+  --ink: #173b3b;
+  --muted: #617570;
+  --line: #e0e8e3;
+  --teal: #087f83;
+  --selected-surface: #e8f2ee;
+  --gold: #b59b63;
+  --gold-soft: #f5efdf;
+  --hero: #173f3c;
+  --action: #087f83;
+  --action-hover: #066f73;
+  --warning-text: #765819;
+  --danger-text: #a12f43;
+  --hero-ink: #f2fbf8;
+  --hero-muted: #c7ded8;
+  --sphere-font: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --bank-bg: var(--canvas);
+  --bank-surface: var(--surface);
+  --bank-raised: var(--raised);
+  --bank-field: var(--raised);
+  --bank-text: var(--ink);
+  --bank-muted: var(--muted);
+  --bank-subtle: var(--muted);
+  --bank-line: var(--line);
+  --bank-line-strong: color-mix(in srgb, var(--teal) 30%, var(--line));
+  --bank-green: var(--action);
+  --bank-green-action: var(--action);
+  --bank-green-text: var(--teal);
+  --bank-green-soft: var(--selected-surface);
+  --bank-gold: var(--gold);
+  --sphere-primary: var(--action);
+  --line-hi: var(--bank-line-strong);
+  --void: var(--canvas);
+  --surf: var(--surface);
+  --surf-hi: var(--raised);
+  --ink-2: var(--ink);
+  --ink-3: var(--muted);
+  --ink-4: var(--muted);
+  --acc: var(--teal);
+  --mint: var(--teal);
+  --mint-bright: var(--teal);
+  --v2-accent: var(--action);
+  --neo-lime: var(--action);
+  --neo-forest: var(--canvas);
+  --neo-surface: var(--surface);
+  --neo-raised: var(--raised);
+  --neo-positive: var(--teal);
+  --neo-warning: var(--warning-text);
+  --neo-negative: var(--danger-text);
+  --v10-warning: var(--warning-text);
+  --danger: var(--danger-text);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --canvas: #101f20;
+  --surface: #192c2d;
+  --raised: #223738;
+  --ink: #edf5f1;
+  --muted: #a8beb6;
+  --line: #304847;
+  --teal: #8cddd6;
+  --selected-surface: #22423b;
+  --gold: #d7b575;
+  --gold-soft: #3b3527;
+  --hero: #174548;
+  --warning-text: #e5c791;
+  --danger-text: #ffadb8;
+  color-scheme: dark;
+}
+
+:root[data-theme],
+:root[data-theme] :is(body, #root, .initial-loading, .v2-workspace, .v2-stage, .v2-device, .v2-review-note),
+:root[data-theme] .frame.v2-frame,
+:root[data-theme] .v2-frame :is(.frame-body, .v2-scroll, .body-scroll, .n6-page-scroll) {
+  background: var(--canvas) !important;
+  color: var(--ink);
+}
+
+:root[data-theme] :is(body, .v2-workspace, .v2-frame) {
+  --sber-font-text: var(--sphere-font);
+  --sber-font-display: var(--sphere-font);
+  font-family: var(--sphere-font) !important;
+}
+
+:root[data-theme] .v2-workspace :where(*),
+:root[data-theme] :is(input, textarea)::placeholder {
+  font-family: var(--sphere-font) !important;
+}
+
+:root[data-theme] .v2-catalog {
+  background: var(--surface) !important;
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+:root[data-theme] .v2-catalog-search,
+:root[data-theme] .v2-catalog-list section button:hover {
+  background: var(--raised) !important;
+  color: var(--ink) !important;
+  border-color: var(--line);
+}
+
+:root[data-theme] .v2-catalog-list section button {
+  color: var(--ink);
+}
+
+:root[data-theme] .v2-catalog-list section button.active,
+:root[data-theme] .v2-catalog-list section button.active > span {
+  background: var(--selected-surface) !important;
+  color: var(--teal) !important;
+}
+
+:root[data-theme] .v2-catalog-list h2,
+:root[data-theme] .v2-catalog-list section button > span,
+:root[data-theme] .v2-stage-heading,
+:root[data-theme] .v2-stage-heading span:last-child,
+:root[data-theme] .v2-review-note :is(p, li, small),
+:root[data-theme] .v2-catalog-brand small {
+  color: var(--muted) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v2-demo-strip, .v2-header, .v2-home-header, .n6-header, .n6-catalog-toolbar, .n6-process, .v10-header, .v10-history-header, .v10-history-chips, .v10-catalog-chrome, .frame-body > footer) {
+  background: var(--canvas) !important;
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+:root[data-theme] .v2-frame .v2-demo-strip,
+:root[data-theme] .v2-frame .v2-demo-strip button {
+  color: var(--muted);
+}
+
+:root[data-theme] .v2-frame .v2-demo-strip i,
+:root[data-theme] .v2-frame .v10-notifications i {
+  background: var(--gold) !important;
+}
+
+:root[data-theme] .v2-frame .v10-header {
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: none;
+}
+
+:root[data-theme] .v2-frame :is(h1, h2, h3, .v10-title-copy h1, .v10-wordmark, .v10-tile strong, .v10-pay-shortcut strong, .v10-profile-hero h2, .v10-cards .v10-card-balance strong) {
+  color: var(--ink) !important;
+}
+
+:root[data-theme] .v2-frame h1 {
+  letter-spacing: -.025em;
+  font-weight: 700 !important;
+}
+
+:root[data-theme] .v2-frame :is(.v10-title-copy p, .v10-wordmark > span, .v10-profile-hero p, .v10-tile small, .v10-pay-shortcut small, .v10-cards .v10-card-balance small) {
+  color: var(--muted) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v2-icon-button, .circle-btn, .v10-sheet-close, .v10-header-icon, .v10-search-button, .v10-avatar-button, .v10-profile-avatar),
+:root[data-theme] .v2-frame .v10-home .v10-search-button {
+  background: var(--surface) !important;
+  color: var(--ink) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 13px !important;
+  box-shadow: none;
+}
+
+:root[data-theme] .v2-frame .v10-header :is(.v10-header-icon, .v10-avatar-button, .v10-search-button > svg) {
+  color: var(--teal) !important;
+}
+
+:root[data-theme] .v2-frame .v10-search-button span {
+  color: var(--muted);
+}
+
+/* The prominent balance uses the same coloured surface in both themes. */
+:root[data-theme] .v2-frame .v10-home .v10-wallet-card,
+:root[data-theme] .v2-frame .v10-account-hero {
+  background: linear-gradient(125deg, var(--hero), #123437) !important;
+  border: 1px solid #4a82843b !important;
+  border-radius: 23px !important;
+  color: var(--hero-ink) !important;
+  box-shadow: none !important;
+  backdrop-filter: none;
+}
+
+:root[data-theme] .v2-frame .v10-home .v10-wallet-card::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  right: -88px;
+  bottom: -114px;
+  width: 255px;
+  height: 255px;
+  border-radius: 50%;
+  border: 14px solid #c0b37c15;
+  box-shadow: 0 0 0 12px #c0b37c0b, inset 0 0 0 12px #c0b37c0b;
+  pointer-events: none;
+}
+
+:root[data-theme] .v2-frame :is(.v10-wallet-card, .v10-account-hero) :is(.n6-money, .n6-money small) {
+  color: var(--hero-ink) !important;
+  font-weight: 650 !important;
+  font-variant-numeric: tabular-nums;
+}
+
+:root[data-theme] .v2-frame .v10-home .v10-wallet-card :is(.v10-wallet-label, .v10-account-picker, .v10-account-picker > svg, .v10-linked-card, .v10-linked-card small, .v10-wallet-details),
+:root[data-theme] .v2-frame .v10-account-hero :is(.v10-account-label, .v10-account-badge) {
+  color: var(--hero-muted) !important;
+}
+
+:root[data-theme] .v2-frame .v10-home .v10-wallet-card .v10-eye {
+  background: #dbf2ea0d !important;
+  color: var(--hero-ink) !important;
+}
+
+:root[data-theme] .v2-frame .v10-wallet-footer {
+  padding-top: 8px;
+  border-top: 1px solid #deeeeb24;
+}
+
+:root[data-theme] .v2-frame .v10-linked-art {
+  background: #e8f2ee16 !important;
+  color: var(--hero-ink) !important;
+  border-color: #deeeeb24;
+}
+
+:root[data-theme] .v2-frame :is(.n6-action, .v2-quick-actions > button) > span,
+:root[data-theme] .v2-frame :is(.v10-home, .v10-page) .v10-quick-actions .n6-action > span {
+  background: var(--surface) !important;
+  color: var(--teal) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 14px;
+}
+
+:root[data-theme] .v2-frame :is(.n6-action.is-primary > span, .v2-quick-actions > button > span.primary),
+:root[data-theme] .v2-frame :is(.v10-home, .v10-page) .v10-quick-actions .n6-action.is-primary > span {
+  background: var(--action) !important;
+  color: #fff !important;
+  border-color: var(--action) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v10-home, .v10-page) .v10-quick-actions .n6-action strong {
+  color: var(--ink) !important;
+}
+
+:root[data-theme] .v2-frame .v10-home .v10-quick-actions {
+  margin-top: 16px !important;
+}
+
+:root[data-theme] .v2-frame :is(.v2-card, .card, .row-card, .panel, .v2-summary, .v2-details, .n6-list, .n6-mini-card, .v10-expense-card, .v10-tile, .v10-pay-shortcut, .v10-pay-account, .v10-home-bottom, .v10-menu-group, .n6-goal, .n6-support-context, .v10-history-choice, .v10-history-setting-row, .v10-history-archive-note, .v10-recommendation-card):not(.v2-bank-card),
+:root[data-theme] .v2-frame :is(.v10-home, .v10-page) .n6-list {
+  background: var(--surface) !important;
+  border-color: var(--line) !important;
+  border-radius: 19px !important;
+  color: var(--ink) !important;
+  box-shadow: none !important;
+}
+
+:root[data-theme] .v2-frame :is(.v10-tile, .v10-pay-shortcut, .v10-pay-account, .v10-expense-card) {
+  border: 1px solid var(--line) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v10-tile-icon, .v10-section-heading button, .v10-inline-link, .v10-budget-link, .v10-profile-id, .v10-pay-account > svg, .v10-pay-shortcut > svg, .v10-sheet-link) {
+  color: var(--teal) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v10-pay-account small, .v10-expense-top small, .v10-expense-top > svg, .v10-spend-legend > span, .v10-expense-bottom, .v10-home-footer button) {
+  color: var(--muted) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v10-expense-top strong, .v10-pay-account strong) {
+  color: var(--ink) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v10-recipient > span, .v10-cards .v10-card-selector button, .v9-topup-method, .v9-country-choice),
+:root[data-theme] .v2-frame[data-screen="topup"] .v9-topup-method {
+  background: var(--surface) !important;
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v10-recipient.is-new > span, .v10-cards .v10-card-selector button.active, .v9-topup-method.is-selected, .v2-card[aria-pressed="true"], .card[aria-selected="true"], .row-card[aria-selected="true"]),
+:root[data-theme] .v2-frame[data-screen="topup"] .v9-topup-method.is-selected {
+  background: var(--selected-surface) !important;
+  color: var(--teal) !important;
+  border-color: var(--bank-line-strong) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v10-recipient strong, .v10-cards .v10-card-selector button > span:nth-child(2)) {
+  color: var(--ink) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v2-row, .n6-row, .n6-transaction) {
+  border-color: var(--line) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v10-home, .v10-page) :is(.n6-row-copy strong, .n6-row-value strong),
+:root[data-theme] .v2-frame .n6-row-copy strong {
+  color: var(--ink) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v10-home, .v10-page) :is(.n6-row-copy small, .n6-row-value small),
+:root[data-theme] .v2-frame .n6-row-copy small {
+  color: var(--muted) !important;
+}
+
+:root[data-theme] .v2-frame :is(.n6-row-icon, .v2-icon, .v10-history-operation-icon) {
+  color: var(--teal) !important;
+  background: var(--selected-surface) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v10-home, .v10-page) .n6-row-value.is-income strong {
+  color: var(--teal) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v2-primary, .btn-primary, .btn-mint, .qa-primary),
+:root[data-theme] .v2-frame [role="group"][aria-label="Способ перевода"] > .v2-primary {
+  min-height: 48px;
+  border-radius: 13px !important;
+  background: var(--action) !important;
+  color: #fff !important;
+  border-color: var(--action) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v2-primary, .btn-primary, .btn-mint, .qa-primary):not(:disabled):hover {
+  background: var(--action-hover) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v2-secondary, .btn-secondary, .btn-ghost, .qa-ghost, .v10-inline-links .v2-secondary),
+:root[data-theme] .v2-frame [role="group"][aria-label="Способ перевода"] > .v2-secondary {
+  min-height: 44px;
+  border-radius: 13px !important;
+  background: var(--raised) !important;
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v2-field, .field, .v10-history-search, .v10-catalog-search) {
+  color: var(--muted) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v2-field :is(input, select, textarea), :is(input, select, textarea).v2-field, .field, .n6-search, .v10-history-search, .v10-catalog-search) {
+  background: var(--raised) !important;
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
+  border-radius: 13px;
+}
+
+:root[data-theme] .v2-frame :is(.v10-history-search, .v10-catalog-search) input {
+  background: transparent !important;
+  color: var(--ink) !important;
+}
+
+:root[data-theme] .v2-frame :is(input, textarea)::placeholder {
+  color: var(--muted) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v2-field:focus-within, .v2-field :is(input, select, textarea):focus, :is(input, select, textarea).v2-field:focus, .v10-history-search:focus-within, .v10-catalog-search:focus-within) {
+  border-color: var(--teal) !important;
+  box-shadow: none !important;
+}
+
+:root[data-theme] :is(button, a, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--teal) !important;
+  outline-offset: 3px;
+}
+
+:root[data-theme] .v2-frame :is(.v2-chip, .v10-history-chip, .v10-context-pill) {
+  background: var(--raised);
+  color: var(--ink);
+}
+
+:root[data-theme] .v2-frame :is(.v2-chip.active, .v2-chips .active, .v10-history-chip.is-active, .v10-catalog-tabs button.is-active, .seg-item[data-on="true"]) {
+  background: var(--selected-surface) !important;
+  color: var(--teal) !important;
+  border-color: var(--bank-line-strong) !important;
+}
+
+:root[data-theme] .v2-frame[data-screen="history"] {
+  --history-bg: var(--canvas);
+  --history-card: var(--surface);
+  --history-field: var(--raised);
+  --history-text: var(--ink);
+  --history-muted: var(--muted);
+  --history-green: var(--teal);
+  --history-warning: var(--warning-text);
+}
+
+:root[data-theme] .v2-frame :is(.sheet, .toast > span, .v10-sheet, .v10-sheet-heading, .v10-sheet-content, .v10-history-sheet-content) {
+  background: var(--surface) !important;
+  border-color: var(--line) !important;
+  color: var(--ink) !important;
+}
+
+:root[data-theme] .v2-frame :is(.v10-menu-icon, .v10-menu-copy small, .v10-sheet-description, .v10-history-setting-row small, .v10-history-operation-meta) {
+  color: var(--muted) !important;
+}
+
+:root[data-theme] .v2-frame .v10-menu-row + .v10-menu-row::before,
+:root[data-theme] .v2-frame .v10-sheet-handle {
+  background: var(--line);
+}
+
+:root[data-theme] .v2-frame :is(.v10-notice, .v10-cards .v10-card-status.is-muted) {
+  background: var(--gold-soft) !important;
+  color: var(--warning-text) !important;
+}
+
+:root[data-theme] .v2-frame .v2-tabbar {
+  background: var(--surface) !important;
+  border-top: 1px solid var(--line) !important;
+}
+
+:root[data-theme] .v2-frame .v2-tabbar button {
+  color: var(--muted) !important;
+}
+
+:root[data-theme] .v2-frame .v2-tabbar button.active {
+  color: var(--teal) !important;
+}
+
+:root[data-theme] .v2-frame .v2-tabbar button.active::before {
+  display: block !important;
+  content: "";
+  height: 2px;
+  width: 24px;
+  border-radius: 2px;
+  background: var(--gold);
+  box-shadow: none;
+  top: 0;
+  z-index: 1;
+}
+
+.sphere-theme-switch {
+  display: grid;
+  place-items: center;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--teal);
+}
+
+@media (max-width: 380px) {
+  :root[data-theme] .v2-frame .v10-appbar { gap: 7px; }
+  :root[data-theme] .v2-frame .v10-home .v10-wallet-card .n6-money {
+    font-size: clamp(30px, 10vw, 38px) !important;
+  }
+}
