@@ -12,7 +12,7 @@ def build():
         target = DEST / name
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / name, target)
-    for name in ['assets', 'modules']:
+    for name in ['assets', 'modules', 'wallet']:
         shutil.copytree(ROOT / name, DEST / name, dirs_exist_ok=True)
     (DEST / '.nojekyll').write_text('')
     print('Prepared public frontend in docs/')

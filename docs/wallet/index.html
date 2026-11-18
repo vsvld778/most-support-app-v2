@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101f20">
+  <meta name="description" content="Migrant Wallet — интерактивный прототип кошелька Моста поддержки. Переводы близким, пополнение и важные платежи.">
+  <title>Migrant Wallet — Мост поддержки</title>
+  <link rel="icon" href="../assets/logo-mark.webp">
+  <link rel="apple-touch-icon" href="../assets/logo-mark.webp">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="most.css?v=1">
+  <script>
+    if (new URLSearchParams(location.search).get('view') === 'mobile') {
+      document.documentElement.dataset.view = 'mobile';
+    }
+    let theme = 'dark';
+    try { if (localStorage.getItem('mw-theme') === 'light') theme = 'light'; } catch {}
+    document.documentElement.dataset.theme = theme;
+    document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#101f20' : '#f5f7f6';
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Перейти к содержанию</a>
+  <div id="app"><div class="loading">Migrant Wallet · открываем кошелёк…</div></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <dialog id="modal" aria-labelledby="modal-title"></dialog>
+  <noscript>Для интерактивного прототипа включите JavaScript.</noscript>
+  <script type="module" src="app.js?v=1"></script>
+</body>
+</html>

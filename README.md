@@ -5,6 +5,7 @@
 - **V2:** https://vsvld778.github.io/most-support-app-v2/
 - **V1 — отдельный проект:** https://vsvld778.github.io/most-support-app/
 - **Основной сайт:** https://migrantmost.ru/
+- **Migrant Wallet, демо на iPhone:** https://vsvld778.github.io/most-support-app-v2/wallet/iphone/
 
 ## Возможности публичной версии
 

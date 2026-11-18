@@ -1,0 +1,119 @@
+/* Shared colors and surfaces with the Most Support application. */
+:root {
+  --canvas: #f5f7f6;
+  --surface: #fff;
+  --raised: #edf2ef;
+  --ink: #173b3b;
+  --deep: #173b3b;
+  --muted: #617570;
+  --line: #e0e8e3;
+  --teal: #087f83;
+  --mint: #e8f2ee;
+  --gold: #b59b63;
+  --gold-soft: #f5efdf;
+  --hero: #173f3c;
+  --shadow: none;
+}
+:root[data-theme="dark"] {
+  --canvas: #101f20;
+  --surface: #192c2d;
+  --raised: #223738;
+  --ink: #edf5f1;
+  --deep: #edf5f1;
+  --muted: #a8beb6;
+  --line: #304847;
+  --teal: #8cddd6;
+  --mint: #22423b;
+  --gold: #d7b575;
+  --gold-soft: #3b3527;
+  --hero: #174548;
+  --shadow: none;
+}
+:root[data-view="mobile"] { scrollbar-width: none; }
+body { line-height: 1.55; }
+h1, h2, h3, .modal-head h2, .life-card h2, .help-card h2 {
+  font-family: inherit;
+  letter-spacing: -.025em;
+}
+h1 { font-size: clamp(32px, 4vw, 42px); font-weight: 700; line-height: 1.14; }
+h2, .modal-head h2 { font-size: 22px; font-weight: 650; line-height: 1.25; }
+h3 { font-weight: 650; }
+main { max-width: 1180px; }
+.sidebar { padding: 30px 18px; background: var(--surface); }
+.sidebar nav { margin-top: 32px; }
+.sidebar .nav-item { border-radius: 13px; min-height: 48px; }
+.sidebar .nav-item.active { background: var(--mint); color: var(--teal); }
+.topbar { background: var(--canvas); }
+.topbar .icon-button { border-radius: 12px; }
+.balance-card {
+  border-radius: 23px;
+  background: linear-gradient(125deg, var(--hero), #123437);
+  box-shadow: none;
+}
+.balance-number { font-weight: 650; overflow-wrap: anywhere; }
+.bridge-art { opacity: .8; }
+.card, .panel, .service-tile, .wallet-card-link, .home-service {
+  border-radius: 19px;
+  box-shadow: none;
+}
+.dashboard-grid > *, .dashboard-aside > *, .flow-layout > * {
+  min-width: 0;
+}
+:is(.choice-grid, .cards-strip, .home-services, .recipient-grid, .service-grid) > * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.card > .notice:last-child { margin-bottom: 0; }
+.button.primary { background: #087f83; color: #fff; }
+.button.primary:hover { background: #066f73; }
+.button { border-radius: 13px; min-height: 48px; }
+.icon-button:focus-visible, .button:focus-visible { outline-offset: 2px; }
+dialog { border: 1px solid var(--line); background: var(--surface); }
+
+@media (max-width: 720px) {
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    height: auto;
+    min-height: 70px;
+    padding: max(10px, env(safe-area-inset-top)) 20px 10px;
+    border-bottom: 1px solid var(--line);
+    gap: 8px;
+  }
+  .breadcrumb { min-width: 0; line-height: 1.2; color: var(--ink); }
+  .breadcrumb-logo { width: 29px; height: 34px; flex: 0 0 auto; }
+  .breadcrumb > span:first-of-type { font-size: 15px; font-weight: 700; overflow-wrap: normal; }
+  .topbar-actions { flex: 0 0 auto; gap: 6px; }
+  .topbar-actions .profile-dot { display: none; }
+  main { padding: 20px 20px calc(94px + env(safe-area-inset-bottom)); }
+  .page-heading { margin-bottom: 22px; }
+  .page-heading h1 { font-size: 34px; overflow-wrap: anywhere; }
+  .home-heading { margin-bottom: 14px; }
+  .balance-card { padding: 18px 20px; min-height: 0; }
+  .balance-number { font-size: clamp(32px, 9vw, 44px); }
+  .quick-actions { gap: 6px; margin: 16px 0 23px; }
+  .quick-action { align-items: center; min-width: 0; }
+  .quick-action > span { border-radius: 14px; }
+  .quick-action b { overflow-wrap: anywhere; }
+  .cards-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 24px; }
+  .wallet-card-link { align-items: flex-start; }
+  .wallet-card-link > span:nth-child(2) { min-width: 0; }
+  .card, .panel { padding: 18px; }
+  .bottom-nav { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .bottom-nav .nav-item { min-width: 0; font-size: 10px; }
+  .bottom-nav .nav-item span { line-height: 1.15; overflow-wrap: anywhere; }
+  .flow-layout { grid-template-columns: minmax(0, 1fr); }
+  .action-row .button { min-width: 0; overflow-wrap: anywhere; }
+  .section-head, .operation-row { min-width: 0; }
+  .operation-amount { max-width: 50%; overflow-wrap: anywhere; }
+  .operation-copy { min-width: 0; overflow-wrap: anywhere; }
+}
+@media (max-width: 365px) {
+  .topbar { padding-left: 16px; padding-right: 16px; }
+  main { padding-left: 16px; padding-right: 16px; }
+  .bottom-nav { padding-left: 5px; padding-right: 5px; }
+  .card, .panel { padding: 15px; }
+  .action-row { display: flex; flex-wrap: wrap; }
+  .action-row > .button { flex: 1 1 110px; }
+}
